@@ -1,0 +1,22 @@
+[
+    {
+        "boardId": "1",
+        "boardName": "General",
+        "notes": [
+            {
+                "noteId": "1",
+                "text": "This is my first note."
+            }
+        ]
+    },
+    {
+        "boardId": "2",
+        "boardName": "LSEG",
+        "notes": [
+            {
+                "noteId": "1",
+                "text": "cpurl://apps.cp./Apps/MyFiles"
+            }
+        ]
+    }
+]
