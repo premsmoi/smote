@@ -7,4 +7,10 @@ interface Board {
 interface Note {
     noteId: string;
     text: string;
+    color?: string;
+}
+
+interface NoteColor {
+    backgroundColor: string;
+    borderColor: string;
 }

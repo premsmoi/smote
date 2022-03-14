@@ -10,7 +10,7 @@ const NoteList: React.FC<Props> = props => {
     return (
         <div id="noteList">
             {
-                props.notes.map(({ noteId, text }) => (<NoteItem key={noteId} noteId={noteId} text={text} />))
+                props.notes.map(({ noteId, text, color }) => (<NoteItem key={noteId} noteId={noteId} text={text} color={color} />))
             }
         </div>
     );

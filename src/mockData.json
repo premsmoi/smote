@@ -5,7 +5,13 @@
         "notes": [
             {
                 "noteId": "1",
-                "text": "This is my first note."
+                "text": "This is my first note.",
+                "color": "yellow"
+            },
+            {
+                "noteId": "2",
+                "text": "This is my second note.",
+                "color": "pink"
             }
         ]
     },
@@ -15,7 +21,8 @@
         "notes": [
             {
                 "noteId": "1",
-                "text": "cpurl://apps.cp./Apps/MyFiles"
+                "text": "cpurl://apps.cp./Apps/MyFiles",
+                "color": "green"
             }
         ]
     }
