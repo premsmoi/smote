@@ -16,7 +16,7 @@ const BoardList: React.FC<Props> = props => {
         <div id="boardList">
             {
                 MockData.map((board: Board) => {
-                    return <BoardItem board={board} onClick={onClickBoardItem} />
+                    return <BoardItem key={board.boardId} board={board} onClick={onClickBoardItem} />
                 })
             }
         </div>

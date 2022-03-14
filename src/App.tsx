@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import './app.scss';
+import React, { MouseEventHandler, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faHomeAlt } from '@fortawesome/free-solid-svg-icons'
 import { Page } from './const';
 import Board from './pages/Board';
 import Home from './pages/Home';
+import './app.scss';
 
 function App() {
   const [page, setPage] = useState<Page>(Page.home);
@@ -11,6 +13,11 @@ function App() {
   const goToBoard = (board: Board) => {
     setCurrentBoard(board);
     setPage(Page.board);
+  };
+
+  const goToHome = () => {
+    setCurrentBoard(undefined);
+    setPage(Page.home);
   };
 
   const renderPage = () => {
@@ -25,6 +32,9 @@ function App() {
   return (
     <div id="app">
       <header>
+        <div className="homeButtonContainer">
+          <FontAwesomeIcon className="homeButton" icon={faHome} size="xs" onClick={goToHome} />
+        </div>
         Smote
       </header>
       <div id="body">
