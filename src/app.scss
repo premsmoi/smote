@@ -12,17 +12,17 @@
             align-items: center;
             position: absolute;
             top: 3px;
-            left: 30px;
+            left: 20px;
             width: 50px;
             height: 50px;
 
             .homeButton {
-                font-size: 0.75em;
+                font-size: 0.5em;
                 cursor: pointer;
                 transition: font-size 0.2s;
     
                 &:hover {
-                    font-size: 0.9em;
+                    font-size: 0.7em;
                 }
             }
         }
@@ -67,6 +67,18 @@
                     text-align: center;
                     text-overflow: ellipsis;
                     overflow: hidden;
+
+                    .noteEditor {
+                        width: 195px;
+                        height: 195px;
+                        font-size: 16px;
+                        font-family: inherit;
+                        color: inherit;
+                        border: unset;
+                        background-color: unset;
+                        outline: unset;
+                        resize: none;
+                    }
                 }
             }
         }

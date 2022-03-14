@@ -1,6 +1,6 @@
-import React, { MouseEventHandler, useState } from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faHomeAlt } from '@fortawesome/free-solid-svg-icons'
+import { faHome } from '@fortawesome/free-solid-svg-icons'
 import { Page } from './const';
 import Board from './pages/Board';
 import Home from './pages/Home';
