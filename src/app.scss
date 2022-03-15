@@ -32,6 +32,12 @@ header {
 }
 
 .home {
+    .addBoardIcon {
+        margin-top: 10px;
+        margin-left: 30px;
+        cursor: pointer;
+    }
+
     .boardList {
         padding: 20px;
         display: flex;
@@ -55,6 +61,12 @@ header {
 }
 
 .board {
+    .addNoteIcon {
+        margin-top: 10px;
+        margin-left: 30px;
+        cursor: pointer;
+    }
+
     .noteList {
         padding: 20px;
         display: flex;

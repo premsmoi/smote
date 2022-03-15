@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
+import { useState } from 'react';
 import NoteItem from './noteItem';
 
 interface Props {
