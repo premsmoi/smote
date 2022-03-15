@@ -1,85 +1,85 @@
-#app {
-    header {
-        font-size: 48px;
-        color: white;
-        text-align: center;
-        background-color: black;
+body {
+    margin: 0;
+}
 
-        .homeButtonContainer {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            position: absolute;
-            top: 3px;
-            left: 20px;
-            width: 50px;
-            height: 50px;
+header {
+    font-size: 48px;
+    color: white;
+    text-align: center;
+    background-color: black;
 
-            .homeButton {
-                font-size: 0.5em;
-                cursor: pointer;
-                transition: font-size 0.2s;
-    
-                &:hover {
-                    font-size: 0.7em;
-                }
+    .homeButtonContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 3px;
+        left: 20px;
+        width: 50px;
+        height: 50px;
+
+        .homeButton {
+            font-size: 0.5em;
+            cursor: pointer;
+            transition: font-size 0.2s;
+
+            &:hover {
+                font-size: 0.7em;
             }
         }
     }
+}
 
-    #body {
-        #home {
-            #boardList {
-                padding: 20px;
-                display: flex;
-                flex-wrap: wrap;
-                .boardItem {
-                    border: 1px solid black;
-                    width: 100px;
-                    height: 50px;
-                    line-height: 50px;
-                    margin: 10px;
-                    text-align: center;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                    cursor: pointer;
-                    
-                    &:hover {
-                        background-color: lightgray;
-                    }
-                }
+.home {
+    .boardList {
+        padding: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        .boardItem {
+            border: 1px solid black;
+            width: 100px;
+            height: 50px;
+            line-height: 50px;
+            margin: 10px;
+            text-align: center;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            cursor: pointer;
+            
+            &:hover {
+                background-color: lightgray;
             }
         }
+    }
+}
 
-        #board {
-            #noteList {
-                padding: 20px;
-                display: flex;
-                flex-wrap: wrap;
-                .noteItem {
-                    border: 2px solid black;
-                    width: 200px;
-                    height: 200px;
-                    line-height: 50px;
-                    margin: 10px;
-                    padding: 5px;
-                    text-align: center;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
+.board {
+    .noteList {
+        padding: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        .noteItem {
+            border: 2px solid black;
+            width: 200px;
+            height: 200px;
+            line-height: 50px;
+            margin: 10px;
+            padding: 5px;
+            text-align: center;
+            text-overflow: ellipsis;
+            overflow: hidden;
 
-                    .noteEditor {
-                        width: 195px;
-                        height: 195px;
-                        font-size: 16px;
-                        font-family: inherit;
-                        color: inherit;
-                        border: unset;
-                        background-color: unset;
-                        outline: unset;
-                        resize: none;
-                    }
-                }
+            .noteEditor {
+                width: 195px;
+                height: 195px;
+                font-size: 16px;
+                font-family: inherit;
+                color: inherit;
+                border: unset;
+                background-color: unset;
+                outline: unset;
+                resize: none;
             }
         }
     }

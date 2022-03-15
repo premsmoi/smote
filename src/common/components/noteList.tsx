@@ -1,5 +1,5 @@
 import React from 'react';
-import NoteItem from './NoteItem';
+import NoteItem from './noteItem';
 
 interface Props {
     notes: Note[]
@@ -8,7 +8,7 @@ interface Props {
 const NoteList: React.FC<Props> = props => {
 
     return (
-        <div id="noteList">
+        <div className="noteList">
             {
                 props.notes.map(({ noteId, text, color }) => (<NoteItem key={noteId} noteId={noteId} text={text} color={color} />))
             }

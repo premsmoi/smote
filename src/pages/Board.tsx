@@ -1,18 +1,25 @@
 import React from 'react';
-import NoteList from '../components/NoteList';
+import { useRouter } from 'next/router'
+import NoteList from '../common/components/noteList';
+import MockData from '../mockData.json';
+import Header from '../common/components/header';
 
 interface Props {
-    board: Board | undefined;
-    onClick: (board: Board) => void;
 }
 
 const Board: React.FC<Props> = props => {
-    const { board } = props;
+    const router = useRouter()
+    const { boardId } = router.query;
+
+    if (!boardId) return null;
+
+    const board = MockData.find(board => board.boardId === boardId);
 
     if (!board) return null;
 
     return (
-        <div id="board">
+        <div className="board">
+            <Header />
             <NoteList notes={board.notes} />
         </div>
     );

@@ -1,5 +1,5 @@
 import React, { FC, FocusEventHandler, ChangeEventHandler, useState, useLayoutEffect, useRef } from 'react';
-import { noteColors } from '../const';
+import { noteColors } from '../../const';
 
 const NoteItem: FC<Note> = props => {
     const { text, color = 'yellow' } = props;
