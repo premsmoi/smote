@@ -81,6 +81,18 @@ header {
             text-align: center;
             text-overflow: ellipsis;
             overflow: hidden;
+            position: relative;
+
+            .header {
+                height: 25px;
+                .deleteNoteButton {
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                    font-size: 1.5em;
+                    cursor: pointer;
+                }
+            }
 
             .noteEditor {
                 width: 195px;

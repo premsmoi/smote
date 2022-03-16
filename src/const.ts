@@ -17,3 +17,13 @@ export const noteColors: Record<string, NoteColor> = {
     borderColor: '#ff8af9'
   },
 };
+
+export const API_PATH = {
+  BOARDS: '/api/boards',
+  NOTES: '/api/notes',
+};
+
+export const COLLECTION = {
+  BOARDS: 'boards',
+  NOTES: 'notes'
+}

@@ -9,7 +9,7 @@ const BoardItem: React.FC<Props> = props => {
     const { board } = props;
 
     return (
-        <Link href={{ pathname: '/board', query: { boardId: board.boardId } }}>
+        <Link href={{ pathname: `/board/${board.boardId}` }}>
             <div className="boardItem">
                 {board.boardName}
             </div>

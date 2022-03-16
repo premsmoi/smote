@@ -3,16 +3,6 @@ import { Db, MongoClient } from 'mongodb';
 const MONGODB_URI = 'mongodb+srv://premsmoi:prem393390@cluster0.vnb6g.mongodb.net';
 const MONGODB_DB = 'smote';
 
-// check the MongoDB URI
-if (!MONGODB_URI) {
-    throw new Error('Define the MONGODB_URI environmental variable');
-}
-
-// check the MongoDB DB
-if (!MONGODB_DB) {
-    throw new Error('Define the MONGODB_DB environmental variable');
-}
-
 let cachedClient: MongoClient;
 let cachedDb: Db;
 
