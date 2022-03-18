@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import BoardList from '../common/components/boardList';
 import Header from '../common/components/header';
 import { request } from '../utils/request';
 import BoardItem from '../common/components/boardItem';
+import { Button } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 
 const Home = () => {
   const [boards, setBoards] = useState<Board[]>([]);
@@ -23,7 +22,11 @@ const Home = () => {
   return (
     <div className="home">
       <Header />
-      <FontAwesomeIcon className="addBoardIcon" icon={faPlus} size="2x" onClick={handleAddBoard} />
+      <div className="buttonsContainer">
+        <Button variant="contained" startIcon={<AddIcon />} size="large" onClick={handleAddBoard}>
+          New Board
+        </Button>
+      </div>
       <div className="boardList">
         {
             boards.map((board: Board) => <BoardItem key={board.boardId} board={board}/>)

@@ -20,26 +20,30 @@ header {
         height: 50px;
 
         .homeButton {
-            font-size: 0.5em;
+            color: white;
             cursor: pointer;
-            transition: font-size 0.2s;
 
-            &:hover {
-                font-size: 0.7em;
+            svg {
+                font-size: 2rem;
+                transition: font-size 0.2s;
+
+                &:hover {
+                    font-size: 2.5rem;
+                }
             }
         }
     }
 }
 
 .home {
-    .addBoardIcon {
-        margin-top: 10px;
-        margin-left: 30px;
-        cursor: pointer;
+    .buttonsContainer {
+        display: flex;
+        justify-content: space-between;
+        margin: 10px 30px;
     }
 
     .boardList {
-        padding: 20px;
+        padding: 10px 20px;
         display: flex;
         flex-wrap: wrap;
         .boardItem {
@@ -61,14 +65,18 @@ header {
 }
 
 .board {
-    .addNoteIcon {
-        margin-top: 10px;
-        margin-left: 30px;
-        cursor: pointer;
+    .buttonsContainer {
+        display: flex;
+        justify-content: space-between;
+        margin: 10px 30px;
+        
+        svg {
+            cursor: pointer;
+        }
     }
 
     .noteList {
-        padding: 20px;
+        padding: 10px 20px;
         display: flex;
         flex-wrap: wrap;
         .noteItem {
@@ -85,12 +93,11 @@ header {
 
             .header {
                 height: 25px;
+
                 .deleteNoteButton {
                     position: absolute;
-                    top: 5px;
                     right: 5px;
-                    font-size: 1.5em;
-                    cursor: pointer;
+                    padding: unset;
                 }
             }
 
@@ -107,4 +114,9 @@ header {
             }
         }
     }
+}
+
+.MuiButton-root {
+    height: 30px !important;
+    padding: 0px 10px !important;
 }

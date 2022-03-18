@@ -1,6 +1,6 @@
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FC, FocusEventHandler, ChangeEventHandler, useState, useLayoutEffect, useRef } from 'react';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import { noteColors } from '../../const';
 
 interface Props extends Note {
@@ -38,7 +38,10 @@ const NoteItem: FC<Props> = props => {
     return (
         <div className="noteItem" onBlur={onBlur} ref={noteItemRef}>
             <div className="header">
-                <FontAwesomeIcon className="deleteNoteButton" icon={faXmark} onClick={handleDeleteNote} /></div>
+                <IconButton className="deleteNoteButton" onClick={handleDeleteNote}>
+                    <CloseIcon />
+                </IconButton>
+            </div>
             <textarea className="noteEditor" value={newText} onChange={onTextChange}/> 
         </div>
     );

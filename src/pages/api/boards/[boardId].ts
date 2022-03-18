@@ -10,8 +10,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const boardId = queryStringToNumber(query.boardId);
 
   if (method === 'GET') {
-    if (typeof query.boardId !== 'string') return;
-
     const boards = await db.collection(COLLECTION.BOARDS).aggregate([ { $project: { _id: 0 } }, { $match: { boardId } } ]).toArray();
     const notes = await getNotesByBoardId(boardId);
     const board = boards[0];
@@ -21,5 +19,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     res.json({ board });
+  } else if (method === 'DELETE') {
+    await db.collection(COLLECTION.NOTES).deleteMany({ boardId });
+    await db.collection(COLLECTION.BOARDS).deleteOne({ boardId });
+
+    res.json({ success: true });
   }
 };

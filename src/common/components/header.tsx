@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome } from '@fortawesome/free-solid-svg-icons'
+import IconButton from '@mui/material/IconButton';
+import HomeIcon from '@mui/icons-material/Home';
 
 const Header = () => {
     return (
         <header className="header">
             <div className="homeButtonContainer">
                 <Link href="/">
-                    <FontAwesomeIcon className="homeButton" icon={faHome} size="xs"/>
+                    <IconButton className="homeButton">
+                        <HomeIcon />
+                    </IconButton>
                 </Link>
             </div>
             Smote

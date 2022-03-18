@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import Header from '../../common/components/header';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { request } from '../../utils/request';
 import NoteItem from '../../common/components/noteItem';
 import { API_PATH } from '../../const';
+import { Button } from '@mui/material';
 
 interface Props {
 }
@@ -54,12 +55,27 @@ const Board: React.FC<Props> = props => {
           });
     };
 
+    const handleDeleteBoard = () => {
+        request(`${API_PATH.BOARDS}/${boardId}`, {
+            method: 'DELETE',
+          }).then(() => {
+              router.replace('/');
+            });
+    }
+
     if (!boardId) return null;
 
     return (
         <div className="board">
             <Header />
-            <FontAwesomeIcon className="addNoteIcon" icon={faPlus} size="2x" onClick={handleAddNote} />
+            <div className="buttonsContainer">
+            <Button variant="contained" startIcon={<AddIcon />} size="large" onClick={handleAddNote}>
+                New Note
+            </Button>
+            <Button variant="outlined" color="error" startIcon={<DeleteIcon />} size="large" onClick={handleDeleteBoard}>
+                Delete Board
+            </Button>
+            </div>
             <div className="noteList">
             {
                 notes.map(({ noteId, text, color }) => (<NoteItem key={noteId} noteId={noteId} text={text} color={color} onDelete={handleDeleteNote} />))
