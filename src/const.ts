@@ -25,5 +25,6 @@ export const API_PATH = {
 
 export const COLLECTION = {
   BOARDS: 'boards',
-  NOTES: 'notes'
+  NOTES: 'notes',
+  COUTERS: 'counters',
 }
