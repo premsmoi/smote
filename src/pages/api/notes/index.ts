@@ -19,11 +19,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.json({ note });
   }
   else if (method === 'PUT') {
-    const noteId = payload.noteId;
+    let note = payload.note;
+    const noteId = note.noteId;
 
-    await db.collection(COLLECTION.NOTES).updateOne({ noteId }, payload);
+    await db.collection(COLLECTION.NOTES).updateOne({ noteId }, { $set: note });
 
-    const note = await getNoteById(noteId);
+    note = await getNoteById(noteId);
 
     res.json({ note });
   }

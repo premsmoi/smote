@@ -69,16 +69,16 @@ const Board: React.FC<Props> = props => {
         <div className="board">
             <Header />
             <div className="buttonsContainer">
-            <Button variant="contained" startIcon={<AddIcon />} size="large" onClick={handleAddNote}>
-                New Note
-            </Button>
-            <Button variant="outlined" color="error" startIcon={<DeleteIcon />} size="large" onClick={handleDeleteBoard}>
-                Delete Board
-            </Button>
+                <Button variant="contained" startIcon={<AddIcon />} size="large" onClick={handleAddNote}>
+                    New Note
+                </Button>
+                <Button variant="outlined" color="error" startIcon={<DeleteIcon />} size="large" onClick={handleDeleteBoard}>
+                    Delete Board
+                </Button>
             </div>
             <div className="noteList">
             {
-                notes.map(({ noteId, text, color }) => (<NoteItem key={noteId} noteId={noteId} text={text} color={color} onDelete={handleDeleteNote} />))
+                notes.map((note) => (<NoteItem key={note.noteId} note={note} onUpdate={handleUpdateNote} onDelete={handleDeleteNote} />))
             }
         </div>
         </div>
