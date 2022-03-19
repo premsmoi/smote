@@ -9,12 +9,13 @@ const NOTE_HEIGHT = 200;
 
 interface Props {
     note: Note;
+    isActive?: boolean;
     onDelete: (noteId: string) => void;
     onUpdate: (note: Note) => void;
 };
 
 const NoteItem: FC<Props> = props => {
-    const { note, onDelete, onUpdate } = props;
+    const { note, isActive, onDelete, onUpdate } = props;
     const { noteId, text, x, y, color = 'yellow' } = note;
     const [newText, setNewText] = useState(text);
     const [isDragging, setIsDragging] = useState(false);
@@ -31,6 +32,11 @@ const NoteItem: FC<Props> = props => {
         noteItem.style.borderColor = borderColor;
     }, []);
 
+    const handleUpdateNote = (note: Note) => {
+        note.updatedTime = Date.now();
+        onUpdate(note);
+    };
+
     const onTextChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
         setNewText(e.target.value);
     };
@@ -39,7 +45,7 @@ const NoteItem: FC<Props> = props => {
         if (note.text === newText) return;
 
         note.text = newText;
-        onUpdate(note);
+        handleUpdateNote(note);
     };
 
     const handleDeleteNote = () => {
@@ -53,15 +59,42 @@ const NoteItem: FC<Props> = props => {
             offsetY: e.clientY - y
         };
 
+        const noteItem = noteItemRef.current;
+
+        if (!noteItem) return;
+
+        noteItem.classList.add('hide');
+
         e.dataTransfer.setData('dragNoteData', JSON.stringify(dragNoteData));
     };
 
     const onDragEnd: DragEventHandler = (e) => {
         setIsDragging(false);
+
+        const noteItem = noteItemRef.current;
+
+        if (!noteItem) return;
+
+        noteItem.classList.remove('hide');
+    };
+
+    const onClick = () => {
+        if (isActive) return;
+
+        handleUpdateNote(note);
     };
 
     return (
-        <div style={{ width: NOTE_WIDTH, height: NOTE_HEIGHT, top: y, left: x}} className="noteItem" onDragStart={onDragStart} onBlur={onBlur} ref={noteItemRef} draggable={isDragging} onDragEnd={onDragEnd}>
+        <div
+            className="noteItem"
+            ref={noteItemRef}
+            style={{ width: NOTE_WIDTH, height: NOTE_HEIGHT, top: y, left: x}}
+            onDragStart={onDragStart}
+            onBlur={onBlur}
+            onDragEnd={onDragEnd}
+            onClick={onClick}
+            draggable={isDragging}
+        >
             <div className="header">
                 <div className="moveNoteArea" onMouseDown={() => setIsDragging(true)}></div>
                 <IconButton className="deleteNoteButton" onClick={handleDeleteNote}>

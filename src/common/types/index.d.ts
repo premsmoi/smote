@@ -10,6 +10,7 @@ interface Note {
     color?: string;
     x: number;
     y: number;
+    updatedTime: number;
 }
 
 interface NoteColor {

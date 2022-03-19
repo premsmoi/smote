@@ -7,6 +7,7 @@ import { request } from '../../utils/request';
 import NoteItem from '../../common/components/noteItem';
 import { API_PATH } from '../../const';
 import { Button } from '@mui/material';
+import { sortNotesByUpdatedTime } from '../../utils/notes';
 
 interface Props {
 }
@@ -19,30 +20,42 @@ const Board: React.FC<Props> = props => {
     useEffect(() => {
         if (!boardId) return;
 
-        request(`${API_PATH.BOARDS}/${boardId}`).then(data => setNotes(data.board.notes));
+        request(`${API_PATH.BOARDS}/${boardId}`).then(data => {
+            const notes: Note[] = data.board.notes;
+
+            sortNotesByUpdatedTime(notes);
+            setNotes(notes);
+        });
     }, [boardId]);
 
     const handleAddNote = () => {
         request(API_PATH.NOTES, {
           method: 'POST',
-          body: JSON.stringify({ text: 'New Note...', boardId: parseInt(boardId, 10), x: 0, y: 0 })
+          body: JSON.stringify({
+              text: 'New Note...',
+              boardId: parseInt(boardId, 10),
+              x: 30,
+              y: 30,
+              updatedTime: Date.now(),
+        })
         }).then(data => {
             const newNote = data.note as Note;
-            setNotes([ ...notes, newNote]);
+            const newNoteList = [ ...notes, newNote];
+
+            sortNotesByUpdatedTime(newNoteList);
+            setNotes(newNoteList);
           });
     };
 
     const handleUpdateNote = (updatedNote: Note) => {
+        updatedNote.updatedTime = Date.now();
+
+        sortNotesByUpdatedTime(notes);
+        setNotes([...notes]);
+
         request(API_PATH.NOTES, {
           method: 'PUT',
-          body: JSON.stringify({ note: updatedNote })
-        }).then(() => {
-            let targetNote = notes.find(note => note.noteId === updatedNote.noteId);
-
-            if (!targetNote) return;
-
-            targetNote = updatedNote;
-            setNotes(notes);
+          body: JSON.stringify({ note: updatedNote, })
         });
     }
 
@@ -99,7 +112,15 @@ const Board: React.FC<Props> = props => {
             </div>
             <div className="boardArea" onDragOver={onDragOver} onDrop={onDrop}>
             {
-                notes.map((note) => (<NoteItem key={note.noteId} note={note} onUpdate={handleUpdateNote} onDelete={handleDeleteNote} />))
+                notes.map((note, index) => (
+                    <NoteItem
+                        key={note.noteId}
+                        note={note}
+                        onUpdate={handleUpdateNote}
+                        onDelete={handleDeleteNote}
+                        isActive={index === notes.length - 1}
+                    />
+                ))
             }
         </div>
         </div>
