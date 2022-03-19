@@ -1,0 +1,37 @@
+.home {
+    .buttonsContainer {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 30px;
+    }
+
+    .boardList {
+        padding: 10px 20px;
+        display: flex;
+        flex-wrap: wrap;
+
+        .boardItem {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border: 1px solid black;
+            width: 200px;
+            height: 100px;
+            margin: 10px;
+            text-align: center;
+            cursor: pointer;
+            
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.04);
+            }
+        }
+    }
+}
+
+
+.createBoardDialog {
+    .content {
+        display: grid;
+        row-gap: 10px;
+    }
+}

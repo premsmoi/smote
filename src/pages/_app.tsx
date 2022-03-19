@@ -1,4 +1,4 @@
 import App from 'next/app';
-import '../app.scss';
+import '../styles/index.scss';
 
 export default App;
