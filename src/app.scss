@@ -1,3 +1,7 @@
+html, body, #__next, .board {
+    height: 100%;
+}
+
 body {
     margin: 0;
 }
@@ -39,7 +43,7 @@ header {
     .buttonsContainer {
         display: flex;
         justify-content: space-between;
-        margin: 10px 30px;
+        padding: 10px 30px;
     }
 
     .boardList {
@@ -69,35 +73,39 @@ header {
     .buttonsContainer {
         display: flex;
         justify-content: space-between;
-        margin: 10px 30px;
+        padding: 10px 30px;
         
         svg {
             cursor: pointer;
         }
     }
 
-    .noteList {
-        padding: 10px 20px;
-        display: flex;
-        flex-wrap: wrap;
+    .boardArea {
+        height: calc(100% - 105px);
+        position: relative;
+
         .noteItem {
             border: 2px solid black;
-            width: 200px;
-            height: 200px;
             line-height: 50px;
             margin: 10px;
             padding: 5px;
             text-align: center;
             text-overflow: ellipsis;
             overflow: hidden;
-            position: relative;
+            position: absolute;
 
             .header {
                 height: 25px;
+                display: flex;
+                justify-content: space-between;
+
+                .moveNoteArea {
+                    width: 100%;
+                    height: inherit;
+                    cursor: grab;
+                }
 
                 .deleteNoteButton {
-                    position: absolute;
-                    right: 5px;
                     padding: unset;
                 }
             }

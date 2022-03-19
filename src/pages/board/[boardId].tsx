@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, DragEventHandler } from 'react';
 import { useRouter } from 'next/router'
 import Header from '../../common/components/header';
 import AddIcon from '@mui/icons-material/Add';
@@ -25,7 +25,7 @@ const Board: React.FC<Props> = props => {
     const handleAddNote = () => {
         request(API_PATH.NOTES, {
           method: 'POST',
-          body: JSON.stringify({ text: 'New Note...', boardId: parseInt(boardId, 10) })
+          body: JSON.stringify({ text: 'New Note...', boardId: parseInt(boardId, 10), x: 0, y: 0 })
         }).then(data => {
             const newNote = data.note as Note;
             setNotes([ ...notes, newNote]);
@@ -61,7 +61,28 @@ const Board: React.FC<Props> = props => {
           }).then(() => {
               router.replace('/');
             });
-    }
+    };
+
+    const onDragOver: DragEventHandler<HTMLDivElement> = (e) => {
+        e.preventDefault();
+    };
+
+    const onDrop: DragEventHandler<HTMLDivElement> = (e) => {
+        e.preventDefault();
+
+        const dragNoteData = JSON.parse(e.dataTransfer.getData('dragNoteData')) as DragNoteData;
+        const { noteId, offsetX, offsetY } = dragNoteData;
+        console.log('Drop', { dragNoteData })
+
+        const targetNote = notes.find(note => note.noteId === noteId);
+
+        if (!targetNote) return;
+
+        targetNote.x = e.clientX - offsetX;
+        targetNote.y = e.clientY - offsetY;
+
+        handleUpdateNote(targetNote);
+    };
 
     if (!boardId) return null;
 
@@ -76,7 +97,7 @@ const Board: React.FC<Props> = props => {
                     Delete Board
                 </Button>
             </div>
-            <div className="noteList">
+            <div className="boardArea" onDragOver={onDragOver} onDrop={onDrop}>
             {
                 notes.map((note) => (<NoteItem key={note.noteId} note={note} onUpdate={handleUpdateNote} onDelete={handleDeleteNote} />))
             }
