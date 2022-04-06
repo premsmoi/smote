@@ -3,6 +3,8 @@
     .buttonsContainer {
         display: flex;
         justify-content: space-between;
+        max-width: 1280px;
+        margin: auto;
         padding: 10px 30px;
         
         svg {
@@ -10,50 +12,57 @@
         }
     }
 
-    .boardArea {
+    .boardContainer {
+        overflow-x: scroll;
         height: calc(100% - 105px);
-        position: relative;
 
-        .noteItem {
-            border: 2px solid black;
-            line-height: 50px;
-            padding: 5px;
-            text-align: center;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            position: absolute;
-
-            .header {
-                height: 25px;
-                display: flex;
-                justify-content: space-between;
-
-                .moveNoteArea {
-                    width: 100%;
-                    height: inherit;
-                    cursor: grab;
+        .boardArea {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            margin: auto;
+    
+            .noteItem {
+                border: 2px solid black;
+                line-height: 50px;
+                padding: 5px;
+                text-align: center;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                position: absolute;
+    
+                .header {
+                    height: 25px;
+                    display: flex;
+                    justify-content: space-between;
+    
+                    .moveNoteArea {
+                        width: 100%;
+                        height: inherit;
+                        cursor: grab;
+                    }
+    
+                    .deleteNoteButton {
+                        padding: unset;
+                    }
                 }
-
-                .deleteNoteButton {
-                    padding: unset;
+    
+                .noteEditor {
+                    width: 195px;
+                    height: 195px;
+                    font-size: 16px;
+                    font-family: inherit;
+                    color: inherit;
+                    border: unset;
+                    background-color: unset;
+                    outline: unset;
+                    resize: none;
                 }
-            }
-
-            .noteEditor {
-                width: 195px;
-                height: 195px;
-                font-size: 16px;
-                font-family: inherit;
-                color: inherit;
-                border: unset;
-                background-color: unset;
-                outline: unset;
-                resize: none;
-            }
-
-            &.hide {
-                transition: 0.01s;
-                transform: translateX(-9999px);
+    
+                &.hide {
+                    transition: 0.01s;
+                    transform: translateX(-9999px);
+                }
             }
         }
     }

@@ -110,18 +110,20 @@ const Board: React.FC<Props> = props => {
                     Delete Board
                 </Button>
             </div>
-            <div className="boardArea" onDragOver={onDragOver} onDrop={onDrop}>
-            {
-                notes.map((note, index) => (
-                    <NoteItem
-                        key={note.noteId}
-                        note={note}
-                        onUpdate={handleUpdateNote}
-                        onDelete={handleDeleteNote}
-                        isActive={index === notes.length - 1}
-                    />
-                ))
-            }
+            <div className="boardContainer">
+                <div className="boardArea" onDragOver={onDragOver} onDrop={onDrop}>
+                {
+                    notes.map((note, index) => (
+                        <NoteItem
+                            key={note.noteId}
+                            note={note}
+                            onUpdate={handleUpdateNote}
+                            onDelete={handleDeleteNote}
+                            isActive={index === notes.length - 1}
+                        />
+                    ))
+                }
+            </div>
         </div>
         </div>
     );
