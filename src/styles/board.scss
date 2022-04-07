@@ -78,3 +78,10 @@
         }
     }
 }
+
+.editBoardDialog {
+    .content {
+        display: grid;
+        row-gap: 10px;
+    }
+}

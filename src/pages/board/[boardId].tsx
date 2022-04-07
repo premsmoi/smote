@@ -131,6 +131,27 @@ const Board: React.FC<Props> = props => {
         handleUpdateNote(targetNote);
     };
 
+    const renderEditBoardDialog = () => {
+        const deletable = notes.length === 0;
+        return (
+            <Dialog className="editBoardDialog" open={isShowEditBoardDialog}>
+                <DialogTitle>Edit Board</DialogTitle>
+                <div className="content">
+                <TextField id="outlined-basic" label="Board Name" variant="outlined" size="small" value={newBoardName} onChange={e => setNewBoardName(e.target.value)} />
+                <Button variant="contained" onClick={updateBoard}>
+                    Save
+                </Button>
+                <Button variant="outlined" color="error" onClick={handleDeleteBoard} disabled={!deletable}>
+                    Delete
+                </Button>
+                <Button variant="outlined" onClick={hideEditBoardDialog}>
+                    Cancle
+                </Button>
+                </div>
+            </Dialog>
+        );
+    };
+
     return (
         <div className="board">
             <Header />
@@ -164,21 +185,7 @@ const Board: React.FC<Props> = props => {
                     </div>
                 </div>
             </div>}
-            <Dialog className="createBoardDialog" open={isShowEditBoardDialog}>
-                <DialogTitle>Create Board</DialogTitle>
-                <div className="content">
-                <TextField id="outlined-basic" label="Board Name" variant="outlined" size="small" value={newBoardName} onChange={e => setNewBoardName(e.target.value)} />
-                <Button variant="contained" onClick={updateBoard}>
-                    Save
-                </Button>
-                <Button variant="outlined" color="error" onClick={handleDeleteBoard}>
-                    Delete
-                </Button>
-                <Button variant="outlined" onClick={hideEditBoardDialog}>
-                    Cancle
-                </Button>
-                </div>
-            </Dialog>
+            {renderEditBoardDialog()}
         </div>
     );
 };
