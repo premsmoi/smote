@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import DialogTitle from '@mui/material/DialogTitle';
-import Dialog from '@mui/material/Dialog';
-import TextField from '@mui/material/TextField';
+import { Button, Dialog, TextField, DialogTitle } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import Header from '../common/components/header';
 import { request } from '../utils/request';
 import BoardItem from '../common/components/boardItem';
-import { Button } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 
 const Home = () => {
   const [boards, setBoards] = useState<Board[]>([]);

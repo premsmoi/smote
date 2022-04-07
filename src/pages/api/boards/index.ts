@@ -23,6 +23,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     delete board._id;
 
     res.json({ board });
+  } else if (method === 'PUT') {
+    const payload = req.body;
+    const board: Board = payload.board;
+    const { boardId } = board;
+
+    await db.collection(COLLECTION.BOARDS).updateOne({ boardId }, { $set: board });
+
+    res.json({ success: true });
   }
 };
 

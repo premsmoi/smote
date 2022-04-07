@@ -1,19 +1,24 @@
 import React, { useEffect, useState, DragEventHandler } from 'react';
 import { useRouter } from 'next/router'
-import Header from '../../common/components/header';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
+import { Button, Dialog } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import Header from '../../common/components/header';
 import { request } from '../../utils/request';
 import NoteItem from '../../common/components/noteItem';
 import { API_PATH } from '../../const';
-import { Button } from '@mui/material';
 import { sortNotesByUpdatedTime } from '../../utils/notes';
 
 interface Props {
 }
 
 const Board: React.FC<Props> = props => {
+    const [board, setBoard] = useState<Board>();
     const [notes, setNotes] = useState<Note[]>([]);
+    const [isShowEditBoardDialog, setIsShowEditBoardDialog] = useState(false);
+    const [newBoardName, setNewBoardName] = useState('');
     const router = useRouter();
     const boardId = router.query.boardId as string;
 
@@ -21,12 +26,33 @@ const Board: React.FC<Props> = props => {
         if (!boardId) return;
 
         request(`${API_PATH.BOARDS}/${boardId}`).then(data => {
-            const notes: Note[] = data.board.notes;
+            const board: Board = data.board;
 
-            sortNotesByUpdatedTime(notes);
-            setNotes(notes);
+            sortNotesByUpdatedTime(board.notes);
+            setNotes(board.notes);
+            setBoard(board)
+            setNewBoardName(board.boardName)
         });
     }, [boardId]);
+
+    const updateBoard = () => {
+        if (!board) return;
+
+        const updatedBoard: Board = {
+            ...board,
+            boardName: newBoardName
+        };
+
+        request(API_PATH.BOARDS, {
+          method: 'PUT',
+          body: JSON.stringify({ board: updatedBoard })
+        }).then(result => {
+            if (result.success) {
+                hideEditBoardDialog();
+                setBoard(updatedBoard);
+            }
+        });
+    };
 
     const handleAddNote = () => {
         request(API_PATH.NOTES, {
@@ -76,6 +102,14 @@ const Board: React.FC<Props> = props => {
             });
     };
 
+    const showEditBoardDialog = () => {
+        setIsShowEditBoardDialog(true);
+    };
+
+    const hideEditBoardDialog = () => {
+        setIsShowEditBoardDialog(false);
+    };
+
     const onDragOver: DragEventHandler<HTMLDivElement> = (e) => {
         e.preventDefault();
     };
@@ -97,34 +131,54 @@ const Board: React.FC<Props> = props => {
         handleUpdateNote(targetNote);
     };
 
-    if (!boardId) return null;
-
     return (
         <div className="board">
             <Header />
-            <div className="buttonsContainer">
-                <Button variant="contained" startIcon={<AddIcon />} size="large" onClick={handleAddNote}>
-                    New Note
+            {board && <div className="body">
+                <div className="toolbar">
+                    <div className='boardName'>
+                        {board?.boardName}
+                    </div>
+                    <div className="buttonsContainer">
+                        <Button variant="contained" startIcon={<AddIcon />} size="large" onClick={handleAddNote}>
+                            New Note
+                        </Button>
+                        <Button variant="contained" startIcon={<EditIcon />} size="large" onClick={showEditBoardDialog}>
+                            Edit
+                        </Button>
+                    </div>
+                </div>
+                <div className="boardContainer">
+                    <div className="boardArea" onDragOver={onDragOver} onDrop={onDrop}>
+                    {
+                        notes.map((note, index) => (
+                            <NoteItem
+                                key={note.noteId}
+                                note={note}
+                                onUpdate={handleUpdateNote}
+                                onDelete={handleDeleteNote}
+                                isActive={index === notes.length - 1}
+                            />
+                        ))
+                    }
+                    </div>
+                </div>
+            </div>}
+            <Dialog className="createBoardDialog" open={isShowEditBoardDialog}>
+                <DialogTitle>Create Board</DialogTitle>
+                <div className="content">
+                <TextField id="outlined-basic" label="Board Name" variant="outlined" size="small" value={newBoardName} onChange={e => setNewBoardName(e.target.value)} />
+                <Button variant="contained" onClick={updateBoard}>
+                    Save
                 </Button>
-                <Button variant="outlined" color="error" startIcon={<DeleteIcon />} size="large" onClick={handleDeleteBoard}>
-                    Delete Board
+                <Button variant="outlined" color="error" onClick={handleDeleteBoard}>
+                    Delete
                 </Button>
-            </div>
-            <div className="boardContainer">
-                <div className="boardArea" onDragOver={onDragOver} onDrop={onDrop}>
-                {
-                    notes.map((note, index) => (
-                        <NoteItem
-                            key={note.noteId}
-                            note={note}
-                            onUpdate={handleUpdateNote}
-                            onDelete={handleDeleteNote}
-                            isActive={index === notes.length - 1}
-                        />
-                    ))
-                }
-            </div>
-        </div>
+                <Button variant="outlined" onClick={hideEditBoardDialog}>
+                    Cancle
+                </Button>
+                </div>
+            </Dialog>
         </div>
     );
 };
