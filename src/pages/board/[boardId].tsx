@@ -79,7 +79,7 @@ const Board: React.FC<Props> = props => {
         sortNotesByUpdatedTime(notes);
         setNotes([...notes]);
 
-        request(API_PATH.NOTES, {
+        return request(API_PATH.NOTES, {
           method: 'PUT',
           body: JSON.stringify({ note: updatedNote, })
         });

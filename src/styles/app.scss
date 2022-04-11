@@ -44,6 +44,10 @@ header {
     padding: 0px 10px !important;
 }
 
+.MuiIconButton-root {
+    padding: unset;
+}
+
 .MuiPaper-root {
     padding: 0 16px 16px;
 }
