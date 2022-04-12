@@ -13,9 +13,13 @@ export const noteColors: Record<string, NoteColor> = {
     borderColor: '#6cff66'
   },
   pink: {
-    backgroundColor: '#ffb0fb',
-    borderColor: '#ff8af9'
+    backgroundColor: '#ffbafd',
+    borderColor: '#ffb0fb'
   },
+  blue: {
+    backgroundColor: '#9efdff',
+    borderColor: '#8ddfe0'
+  }
 };
 
 export const API_PATH = {

@@ -22,7 +22,7 @@ const NoteItem: FC<Props> = props => {
     const [newText, setNewText] = useState(text);
     const [color, setColor] = useState(note.color || 'yellow');
     const [isDragging, setIsDragging] = useState(false);
-    const [showColorPicker, setShowColorPicker] = useState(false);
+    const [isShowColorPicker, setIsShowColorPicker] = useState(false);
     let noteItemRef = useRef<HTMLDivElement>(null);
     let colorPickerRef = useRef<HTMLDivElement>(null);
 
@@ -90,36 +90,39 @@ const NoteItem: FC<Props> = props => {
     };
 
     const onColorSelected = (color: string) => {
-        toggleColorPicker();
+        hideColorPicker();
         note.color = color;
         handleUpdateNote(note).then(() => setColor(color));
     }
 
-    const toggleColorPicker = () => {
+    const showColorPicker = () => {
         const colorPicker = colorPickerRef.current;
 
         if (!colorPicker) return;
 
-        if (showColorPicker) {
-            setShowColorPicker(false);
-        } else {
-            setShowColorPicker(true);
-        }
+        setIsShowColorPicker(true); 
 
-        console.log({ colorPickerStyle: colorPicker.style })
+        colorPicker.style.maxHeight = `${colorPicker.scrollHeight}px`;
+        colorPicker.style.borderWidth = '1px';
+        colorPicker.tabIndex = -1;
+        colorPicker.focus();
+    };
 
-        if (!colorPicker.style.maxHeight) {
-            colorPicker.style.maxHeight = `${colorPicker.scrollHeight}px`;
-            colorPicker.style.borderWidth = '1px';
-        } else {
-            colorPicker.style.maxHeight = '';
-            colorPicker.style.borderWidth = '0px';
-        }
+    const hideColorPicker = () => {
+        const colorPicker = colorPickerRef.current;
+
+        if (!colorPicker) return;
+
+        setIsShowColorPicker(false);
+
+        colorPicker.style.maxHeight = '';
+        colorPicker.style.borderWidth = '0px';
+        colorPicker.tabIndex = 0;
     };
 
     const renderColorPicker = () => {
         return (
-            <div ref={colorPickerRef} className="colorPicker">
+            <div ref={colorPickerRef} className="colorPicker" onBlur={hideColorPicker}>
                 {Object.entries(noteColors).map(([color, noteColor]) => {
                     const { backgroundColor, borderColor } = noteColor;
                     return (
@@ -143,8 +146,8 @@ const NoteItem: FC<Props> = props => {
             draggable={isDragging}
         >
             <div className="header">
-                <IconButton className="toggleColorPickerButton" onClick={toggleColorPicker} >
-                    { showColorPicker ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon /> }
+                <IconButton className="toggleColorPickerButton" onClick={showColorPicker} >
+                    { isShowColorPicker ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon /> }
                 </IconButton>
                 <div className="moveNoteArea" onMouseDown={() => setIsDragging(true)}></div>
                 <IconButton className="deleteNoteButton" onClick={handleDeleteNote}>

@@ -119,7 +119,6 @@ const Board: React.FC<Props> = props => {
 
         const dragNoteData = JSON.parse(e.dataTransfer.getData('dragNoteData')) as DragNoteData;
         const { noteId, offsetX, offsetY } = dragNoteData;
-        console.log('Drop', { dragNoteData })
 
         const targetNote = notes.find(note => note.noteId === noteId);
 
