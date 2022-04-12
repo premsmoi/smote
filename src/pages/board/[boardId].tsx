@@ -86,7 +86,7 @@ const Board: React.FC<Props> = props => {
     }
 
     const handleDeleteNote = (noteId: string) => {
-        request(`${API_PATH.NOTES}/${noteId}`, {
+        return request(`${API_PATH.NOTES}/${noteId}`, {
           method: 'DELETE',
         }).then(() => {
             const newNotes = notes.filter(note => note.noteId !== noteId);
@@ -95,7 +95,7 @@ const Board: React.FC<Props> = props => {
     };
 
     const handleDeleteBoard = () => {
-        request(`${API_PATH.BOARDS}/${boardId}`, {
+        return request(`${API_PATH.BOARDS}/${boardId}`, {
             method: 'DELETE',
           }).then(() => {
               router.replace('/');
