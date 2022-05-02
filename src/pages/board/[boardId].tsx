@@ -10,6 +10,8 @@ import { request } from '../../utils/request';
 import NoteItem from '../../common/components/noteItem';
 import { API_PATH } from '../../const';
 import { sortNotesByUpdatedTime } from '../../utils/notes';
+import { confirmationDialog } from '../../atoms/confirmationDialog';
+import { useRecoilState } from 'recoil';
 
 interface Props {
 }
@@ -19,6 +21,7 @@ const Board: React.FC<Props> = props => {
     const [notes, setNotes] = useState<Note[]>([]);
     const [isShowEditBoardDialog, setIsShowEditBoardDialog] = useState(false);
     const [newBoardName, setNewBoardName] = useState('');
+    const [confirmationDialogData, setConfirmationDialogData] = useRecoilState(confirmationDialog);
     const router = useRouter();
     const boardId = router.query.boardId as string;
 
@@ -110,6 +113,15 @@ const Board: React.FC<Props> = props => {
         setIsShowEditBoardDialog(false);
     };
 
+    const openDeleteBoardConfirmationDialog = () => {
+        setConfirmationDialogData({
+            title: "Delete Board Confirmation",
+            message: "Are you sure to delete the board?",
+            isShow: true,
+            onConfirm: handleDeleteBoard,
+        });
+    };
+
     const onDragOver: DragEventHandler<HTMLDivElement> = (e) => {
         e.preventDefault();
     };
@@ -140,7 +152,7 @@ const Board: React.FC<Props> = props => {
                 <Button variant="contained" onClick={updateBoard}>
                     Save
                 </Button>
-                <Button variant="outlined" color="error" onClick={handleDeleteBoard} disabled={!deletable}>
+                <Button variant="outlined" color="error" onClick={openDeleteBoardConfirmationDialog} disabled={!deletable}>
                     Delete
                 </Button>
                 <Button variant="outlined" onClick={hideEditBoardDialog}>

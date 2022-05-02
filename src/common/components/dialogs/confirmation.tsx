@@ -1,16 +1,36 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
 import React from 'react';
+import { useRecoilState } from 'recoil';
+import { confirmationDialog } from '../../../atoms/confirmationDialog';
 
-interface Props {
+export interface ConfirmationDialog {
     title: string;
     message: string;
     isShow: boolean;
-    onConfirm: () => any;
-    onClose: () => any;
+    onConfirm: () => Promise<any>;
+    onClose?: () => Promise<any>;
 };
 
-const ConfirmationDialog = (props: Props) => {
-    const { title, message, isShow, onConfirm, onClose } = props;
+const ConfirmationDialog = () => {
+    const [data, setData] = useRecoilState(confirmationDialog);
+    const { title, message, isShow, onConfirm, onClose } = data;
+
+    const handleClose = () => {
+        if (!onClose) {
+            hideDialog();
+            return;
+        }
+
+        onClose().then(hideDialog);
+    };
+
+    const handleConfirm = () => {
+        onConfirm().then(hideDialog);
+    };
+
+    const hideDialog = () => {
+        setData({ ...data, isShow: false });
+    };
 
     return (
         <Dialog className="confirmationDialog" open={isShow}>
@@ -21,8 +41,8 @@ const ConfirmationDialog = (props: Props) => {
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" onClick={onConfirm}>OK</Button>
-                    <Button variant="outlined" onClick={onClose}>
+                    <Button variant="contained" onClick={handleConfirm}>OK</Button>
+                    <Button variant="outlined" onClick={handleClose}>
                         CANCEL
                     </Button>
                 </DialogActions>

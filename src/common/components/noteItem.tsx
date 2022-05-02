@@ -5,7 +5,8 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { noteColors } from '../../const';
 import { DragEventHandler } from 'react';
-import ConfirmationDialog from './dialogs/confirmation';
+import { useRecoilState } from 'recoil';
+import { confirmationDialog } from '../../atoms/confirmationDialog';
 
 const NOTE_WIDTH = 200;
 const NOTE_HEIGHT = 200;
@@ -24,7 +25,7 @@ const NoteItem: FC<Props> = props => {
     const [color, setColor] = useState(note.color || 'yellow');
     const [isDragging, setIsDragging] = useState(false);
     const [isShowColorPicker, setIsShowColorPicker] = useState(false);
-    const [isShowDeleteNoteConfirmationDialog, setIsShowDeleteNoteConfirmationDialog] = useState(false);
+    const [confirmationDialogData, setConfirmationDialogData] = useRecoilState(confirmationDialog);
     let noteItemRef = useRef<HTMLDivElement>(null);
     let colorPickerRef = useRef<HTMLDivElement>(null);
 
@@ -56,9 +57,7 @@ const NoteItem: FC<Props> = props => {
     };
 
     const handleDeleteNote = () => {
-        onDelete(noteId).then(() => {
-            hideDeleteNoteConfirmationDialog();
-        });
+        return onDelete(noteId);
     };
 
     const onDragStart: DragEventHandler = (e) => {
@@ -138,24 +137,13 @@ const NoteItem: FC<Props> = props => {
         );
     };
 
-    const renderDeleteNoteConfirmationDialog = () => {
-        return (
-            <ConfirmationDialog
-                title="Delete Note Confirmation"
-                message="Are you sure to delete the note?"
-                isShow={isShowDeleteNoteConfirmationDialog}
-                onClose={hideDeleteNoteConfirmationDialog}
-                onConfirm={handleDeleteNote}
-            />
-        )
-    }
-
-    const showDeleteNoteConfirmationDialog = () => {
-        setIsShowDeleteNoteConfirmationDialog(true);
-    };
-
-    const hideDeleteNoteConfirmationDialog = () => {
-        setIsShowDeleteNoteConfirmationDialog(false);
+    const openDeleteNoteConfirmationDialog = () => {
+        setConfirmationDialogData({
+            title: "Delete Note Confirmation",
+            message: "Are you sure to delete the note?",
+            isShow: true,
+            onConfirm: handleDeleteNote,
+        });
     };
 
     return (
@@ -174,13 +162,12 @@ const NoteItem: FC<Props> = props => {
                     { isShowColorPicker ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon /> }
                 </IconButton>
                 <div className="moveNoteArea" onMouseDown={() => setIsDragging(true)}></div>
-                <IconButton className="deleteNoteButton" onClick={showDeleteNoteConfirmationDialog}>
+                <IconButton className="deleteNoteButton" onClick={openDeleteNoteConfirmationDialog}>
                     <CloseIcon />
                 </IconButton>
                 {renderColorPicker()}
             </div>
             <textarea className="noteEditor" value={newText} onChange={onTextChange} />
-            {renderDeleteNoteConfirmationDialog()}
         </div>
     );
 };
