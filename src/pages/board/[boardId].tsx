@@ -85,7 +85,7 @@ const Board: React.FC<Props> = props => {
         return request(API_PATH.NOTES, {
           method: 'PUT',
           body: JSON.stringify({ note: updatedNote, })
-        });
+        }, false);
     }
 
     const handleDeleteNote = (noteId: string) => {
