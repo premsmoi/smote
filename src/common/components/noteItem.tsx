@@ -57,7 +57,7 @@ const NoteItem: FC<Props> = props => {
 
     const handleDeleteNote = () => {
         onDelete(noteId).then(() => {
-            hideDeleteNodeConfirmationDialog();
+            hideDeleteNoteConfirmationDialog();
         });
     };
 
@@ -144,17 +144,17 @@ const NoteItem: FC<Props> = props => {
                 title="Delete Note Confirmation"
                 message="Are you sure to delete the note?"
                 isShow={isShowDeleteNoteConfirmationDialog}
-                onClose={hideDeleteNodeConfirmationDialog}
+                onClose={hideDeleteNoteConfirmationDialog}
                 onConfirm={handleDeleteNote}
             />
         )
     }
 
-    const showDeleteNodeConfirmationDialog = () => {
+    const showDeleteNoteConfirmationDialog = () => {
         setIsShowDeleteNoteConfirmationDialog(true);
     };
 
-    const hideDeleteNodeConfirmationDialog = () => {
+    const hideDeleteNoteConfirmationDialog = () => {
         setIsShowDeleteNoteConfirmationDialog(false);
     };
 
@@ -174,7 +174,7 @@ const NoteItem: FC<Props> = props => {
                     { isShowColorPicker ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon /> }
                 </IconButton>
                 <div className="moveNoteArea" onMouseDown={() => setIsDragging(true)}></div>
-                <IconButton className="deleteNoteButton" onClick={showDeleteNodeConfirmationDialog}>
+                <IconButton className="deleteNoteButton" onClick={showDeleteNoteConfirmationDialog}>
                     <CloseIcon />
                 </IconButton>
                 {renderColorPicker()}
