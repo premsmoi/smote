@@ -23,3 +23,9 @@ interface DragNoteData {
     offsetX: number;
     offsetY: number;
 }
+
+interface GoogleUserProfile {
+    name: string;
+    email: string;
+    image: string;
+}

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Dialog, TextField, DialogTitle } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import Header from '../common/components/header';
 import { request } from '../utils/request';
 import BoardItem from '../common/components/boardItem';
 
@@ -40,7 +39,6 @@ const Home = () => {
 
   return (
     <div className="home">
-      <Header />
       <div className="buttonsContainer">
         <Button variant="contained" startIcon={<AddIcon />} size="large" onClick={openCreateBoardDialog}>
           Create Board

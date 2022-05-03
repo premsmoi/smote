@@ -1,7 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import IconButton from '@mui/material/IconButton';
-import HomeIcon from '@mui/icons-material/Home';
+import { Home, Logout } from '@mui/icons-material';
+import { signOut } from 'next-auth/react';
 
 const Header = () => {
     return (
@@ -9,11 +10,16 @@ const Header = () => {
             <div className="homeButtonContainer">
                 <Link href="/">
                     <IconButton className="homeButton">
-                        <HomeIcon />
+                        <Home />
                     </IconButton>
                 </Link>
             </div>
             Smote
+            <div className="logoutButtonContainer">
+                <IconButton className="logoutButton" onClick={() => signOut()}>
+                    <Logout />
+                </IconButton>
+            </div>
         </header>
     );
 }

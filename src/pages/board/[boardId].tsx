@@ -5,7 +5,6 @@ import TextField from '@mui/material/TextField';
 import { Button, Dialog } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
-import Header from '../../common/components/header';
 import { request } from '../../utils/request';
 import NoteItem from '../../common/components/noteItem';
 import { API_PATH } from '../../const';
@@ -165,7 +164,6 @@ const Board: React.FC<Props> = props => {
 
     return (
         <div className="board">
-            <Header />
             {board && <div className="body">
                 <div className="toolbar">
                     <div className='boardName'>
