@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next/types';
 import { COLLECTION } from '../../../const';
 import { connectToDatabase } from '../../../utils/database';
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const boardAPI = async (req: NextApiRequest, res: NextApiResponse) => {
   const { db } = await connectToDatabase();
   const { method } = req;
   const session = await getSession({ req })
@@ -61,3 +61,5 @@ const getBoardId = async (): Promise<number> => {
 
   return seq_value;
 }
+
+export default boardAPI;

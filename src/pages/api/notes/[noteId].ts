@@ -1,10 +1,9 @@
-import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next/types';
 import { connectToDatabase } from '../../../utils/database';
 
 const COLLECTION_NAME = 'notes';
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const noteWithIdAPI = async (req: NextApiRequest, res: NextApiResponse) => {
     const { db } = await connectToDatabase();
     const { method, query: { noteId } } = req;
 
@@ -15,3 +14,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         res.status(200).json({ success: true });
     }
 };
+
+export default noteWithIdAPI;

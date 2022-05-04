@@ -4,7 +4,7 @@ import { connectToDatabase } from '../../../utils/database';
 import { queryStringToNumber } from '../../../utils/request';
 import { getNotesByBoardId } from '../notes';
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const boardWithIdAPI = async (req: NextApiRequest, res: NextApiResponse) => {
   const { db } = await connectToDatabase();
   const { method, query } = req;
   const boardId = queryStringToNumber(query.boardId);
@@ -26,3 +26,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.json({ success: true });
   }
 };
+
+export default boardWithIdAPI;

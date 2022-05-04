@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next/types';
 import { COLLECTION } from '../../../const';
 import { connectToDatabase } from '../../../utils/database';
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const userAPI = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method, body: payload } = req;
 
   if (method === 'POST') {
@@ -25,3 +25,5 @@ export const addNewUserProfile = async (user: UserProfile): Promise<boolean> => 
 
   return true;
 }
+
+export default userAPI;
