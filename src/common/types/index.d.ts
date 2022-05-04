@@ -1,5 +1,5 @@
 interface Board {
-    boardId: string;
+    boardId: number;
     boardName: string;
     notes: Note[];
     members: Member[];
@@ -13,7 +13,7 @@ interface Member {
 type Permission = 'read' | 'write'
 
 interface Note {
-    noteId: string;
+    noteId: number;
     text: string;
     color?: string;
     x: number;

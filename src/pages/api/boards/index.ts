@@ -18,9 +18,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.json({ boards });
   } else if (method === 'POST') {
     const boarId = await getBoardId();
-    const payload = req.body;
+    const payload = req.body as Board;
+    const uid = session.uid as string;
 
     payload.boardId = boarId;
+    payload.members = [{
+      uid,
+      permissions: ['read', 'write']
+    }];
 
     const { insertedId } = await db.collection(COLLECTION.BOARDS).insertOne(payload);
     const board = await db.collection(COLLECTION.BOARDS).findOne({ _id: insertedId }) as any;
