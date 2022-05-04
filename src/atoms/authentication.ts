@@ -1,16 +1,6 @@
 import { atom } from "recoil";
 
-const defaultUserProfile: UserProfile = {
-    uid: '',
-    provider: '',
-};
-
-export const isAuthenticatedAtom = atom({
-    key: "isAuthenticated",
-    default: false,
-});
-
-export const userProfileAtom = atom({
+export const userProfileAtom = atom<UserProfile>({
     key: "userProfile",
-    default: defaultUserProfile,
+    default: undefined,
 });

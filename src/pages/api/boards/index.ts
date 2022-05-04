@@ -1,3 +1,4 @@
+import { getSession } from 'next-auth/react';
 import { NextApiRequest, NextApiResponse } from 'next/types';
 import { COLLECTION } from '../../../const';
 import { connectToDatabase } from '../../../utils/database';
@@ -5,10 +6,14 @@ import { connectToDatabase } from '../../../utils/database';
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { db } = await connectToDatabase();
   const { method } = req;
+  const session = await getSession({ req })
+
+  if (!session) return res.status(401);
 
   if (method === 'GET') {
+    const uid = session.uid;
     const boards = await db
-        .collection(COLLECTION.BOARDS).find().toArray();
+        .collection(COLLECTION.BOARDS).find({ 'members.uid': { $eq: uid  } }).toArray();
 
     res.json({ boards });
   } else if (method === 'POST') {
