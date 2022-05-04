@@ -2,7 +2,15 @@ interface Board {
     boardId: string;
     boardName: string;
     notes: Note[];
+    members: Member[];
 }
+
+interface Member {
+    uid: string;
+    permissions: Permission[];
+}
+
+type Permission = 'read' | 'write'
 
 interface Note {
     noteId: string;
@@ -24,8 +32,10 @@ interface DragNoteData {
     offsetY: number;
 }
 
-interface GoogleUserProfile {
-    name: string;
-    email: string;
-    image: string;
+interface UserProfile {
+    uid: string;
+    provider: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
 }

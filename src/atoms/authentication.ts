@@ -1,9 +1,8 @@
 import { atom } from "recoil";
 
-const defaultUserProfile: GoogleUserProfile = {
-    name: '',
-    email: '',
-    image: '',
+const defaultUserProfile: UserProfile = {
+    uid: '',
+    provider: '',
 };
 
 export const isAuthenticatedAtom = atom({

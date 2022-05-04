@@ -13,7 +13,7 @@ const Authenticate = (props: Props) => {
 
   useEffect(() => {
     getSession().then(data => {
-      const user = data?.user as GoogleUserProfile;
+      const user = data?.user as UserProfile;
       if (user) {
         setIsAuthenticated(true);
         setUserProfile(user);
