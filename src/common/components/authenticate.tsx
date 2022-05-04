@@ -4,7 +4,7 @@ import { getSession, signIn } from "next-auth/react"
 import { userProfileAtom } from '../../atoms/authentication';
 
 interface Props {
-  children: ReactChild
+  children: any
 }
 
 const Authenticate = (props: Props) => {

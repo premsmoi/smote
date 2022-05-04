@@ -27,7 +27,7 @@ interface NoteColor {
 }
 
 interface DragNoteData {
-    noteId: string;
+    noteId: number;
     offsetX: number;
     offsetY: number;
 }

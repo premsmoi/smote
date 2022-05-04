@@ -87,7 +87,7 @@ const Board: React.FC<Props> = props => {
         }, false);
     }
 
-    const handleDeleteNote = (noteId: string) => {
+    const handleDeleteNote = (noteId: number) => {
         return request(`${API_PATH.NOTES}/${noteId}`, {
           method: 'DELETE',
         }).then(() => {
