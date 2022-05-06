@@ -1,4 +1,5 @@
 import type { AppProps } from 'next/app';
+import Head from 'next/head';
 import { RecoilRoot } from "recoil";
 import { usePromiseTracker } from "react-promise-tracker";
 import { SessionProvider } from "next-auth/react"
@@ -12,16 +13,21 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const { promiseInProgress } = usePromiseTracker();
 
   return (
-    <RecoilRoot>
-      <SessionProvider session={session}>
-        <Authenticate>
-          <Header />
-          <Component {...pageProps} />
-        </Authenticate>
-        <ConfirmationDialog />
-        <LoadingBackdrop show={promiseInProgress} />
-      </SessionProvider>
-    </RecoilRoot>
+    <>
+      <Head>
+        <title>Smote</title>
+      </Head>
+      <RecoilRoot>
+        <SessionProvider session={session}>
+          <Authenticate>
+            <Header />
+            <Component {...pageProps} />
+          </Authenticate>
+          <ConfirmationDialog />
+          <LoadingBackdrop show={promiseInProgress} />
+        </SessionProvider>
+      </RecoilRoot>
+    </>
   );
 }
 
