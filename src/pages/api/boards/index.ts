@@ -12,8 +12,8 @@ const boardAPI = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (method === 'GET') {
     const uid = session.uid;
-    const boards = await db
-        .collection(COLLECTION.BOARDS).find({ 'members.uid': { $eq: uid  } }).toArray();
+    const getBoardsQuery = { $or: [{ 'members.uid': { $eq: uid  }}, { isPublic: true }]};
+    const boards = await db.collection(COLLECTION.BOARDS).find(getBoardsQuery).toArray();
 
     res.json({ boards });
   } else if (method === 'POST') {
@@ -22,6 +22,7 @@ const boardAPI = async (req: NextApiRequest, res: NextApiResponse) => {
     const uid = session.uid as string;
 
     payload.boardId = boarId;
+    payload.isPublic = false;
     payload.members = [{
       uid,
       permissions: ['read', 'write']

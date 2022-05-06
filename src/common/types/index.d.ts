@@ -3,6 +3,7 @@ interface Board {
     boardName: string;
     notes: Note[];
     members: Member[];
+    isPublic: boolean;
 }
 
 interface Member {

@@ -2,7 +2,7 @@ import React, { useEffect, useState, DragEventHandler } from 'react';
 import { useRouter } from 'next/router'
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-import { Button, Dialog } from '@mui/material';
+import { Button, Dialog, FormControlLabel, FormGroup, Switch } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import { request } from '../../utils/request';
@@ -18,6 +18,7 @@ interface Props {
 const Board: React.FC<Props> = props => {
     const [board, setBoard] = useState<Board>();
     const [notes, setNotes] = useState<Note[]>([]);
+    const [isPublic, setIsPublic] = useState(false);
     const [isShowEditBoardDialog, setIsShowEditBoardDialog] = useState(false);
     const [newBoardName, setNewBoardName] = useState('');
     const [confirmationDialogData, setConfirmationDialogData] = useRecoilState(confirmationDialog);
@@ -32,8 +33,9 @@ const Board: React.FC<Props> = props => {
 
             sortNotesByUpdatedTime(board.notes);
             setNotes(board.notes);
-            setBoard(board)
-            setNewBoardName(board.boardName)
+            setBoard(board);
+            setNewBoardName(board.boardName);
+            setIsPublic(board.isPublic);
         });
     }, [boardId]);
 
@@ -42,7 +44,8 @@ const Board: React.FC<Props> = props => {
 
         const updatedBoard: Board = {
             ...board,
-            boardName: newBoardName
+            boardName: newBoardName,
+            isPublic,
         };
 
         request(API_PATH.BOARDS, {
@@ -141,6 +144,10 @@ const Board: React.FC<Props> = props => {
         handleUpdateNote(targetNote);
     };
 
+    const handleToggleIsPublic = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setIsPublic(event.target.checked);
+    };
+
     const renderEditBoardDialog = () => {
         const deletable = notes.length === 0;
         return (
@@ -148,6 +155,9 @@ const Board: React.FC<Props> = props => {
                 <DialogTitle>Edit Board</DialogTitle>
                 <div className="content">
                 <TextField id="outlined-basic" label="Board Name" variant="outlined" size="small" value={newBoardName} onChange={e => setNewBoardName(e.target.value)} />
+                <FormGroup>
+                    <FormControlLabel label="Public" control={<Switch checked={isPublic} onChange={handleToggleIsPublic} />} />
+                </FormGroup>
                 <Button variant="contained" onClick={updateBoard}>
                     Save
                 </Button>
