@@ -36,8 +36,8 @@ const Board: React.FC<Props> = props => {
             setBoard(board);
             setNewBoardName(board.boardName);
             setIsPublic(board.isPublic);
-        });
-    }, [boardId]);
+        }).catch(() => router.replace('/'));
+    }, [boardId, router]);
 
     const updateBoard = () => {
         if (!board) return;

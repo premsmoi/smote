@@ -2,18 +2,18 @@ import { getSession } from 'next-auth/react';
 import { NextApiRequest, NextApiResponse } from 'next/types';
 import { COLLECTION } from '../../../const';
 import { connectToDatabase } from '../../../utils/database';
+import { unauthorized } from '../response';
 
 const boardAPI = async (req: NextApiRequest, res: NextApiResponse) => {
   const { db } = await connectToDatabase();
   const { method } = req;
   const session = await getSession({ req })
 
-  if (!session) return res.status(401);
+  if (!session) return unauthorized(res);
 
   if (method === 'GET') {
-    const uid = session.uid;
-    const getBoardsQuery = { $or: [{ 'members.uid': { $eq: uid  }}, { isPublic: true }]};
-    const boards = await db.collection(COLLECTION.BOARDS).find(getBoardsQuery).toArray();
+    const uid = session.uid as string;
+    const boards = await db.collection(COLLECTION.BOARDS).find(getBoardsQuery(uid)).toArray();
 
     res.json({ boards });
   } else if (method === 'POST') {
@@ -50,7 +50,11 @@ export const getBoardById = async (boardId: number) => {
   const boards = await db.collection(COLLECTION.BOARDS).aggregate([{ $project: { _id: 0 } }, { $match: { boardId } }]).toArray();
 
   return boards[0];
-}
+};
+
+export const getBoardsQuery = (uid: string) => {
+  return { $or: [{ 'members.uid': { $eq: uid  }}, { isPublic: true }]};
+};
 
 const getBoardId = async (): Promise<number> => {
   const { db } = await connectToDatabase();
@@ -61,6 +65,6 @@ const getBoardId = async (): Promise<number> => {
   const seq_value = boardsCounter?.seq_value as number;
 
   return seq_value;
-}
+};
 
 export default boardAPI;
