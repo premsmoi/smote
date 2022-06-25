@@ -95,7 +95,8 @@ const NoteItem: FC<Props> = props => {
     const onColorSelected = (color: string) => {
         hideColorPicker();
         note.color = color;
-        handleUpdateNote(note).then(() => setColor(color));
+        setColor(color);
+        handleUpdateNote(note);
     }
 
     const showColorPicker = () => {
