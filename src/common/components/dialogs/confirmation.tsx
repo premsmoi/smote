@@ -3,14 +3,6 @@ import React from 'react';
 import { useRecoilState } from 'recoil';
 import { confirmationDialog } from '../../../atoms/confirmationDialog';
 
-export interface ConfirmationDialog {
-    title: string;
-    message: string;
-    isShow: boolean;
-    onConfirm: () => Promise<any>;
-    onClose?: () => Promise<any>;
-};
-
 const ConfirmationDialog = () => {
     const [data, setData] = useRecoilState(confirmationDialog);
     const { title, message, isShow, onConfirm, onClose } = data;

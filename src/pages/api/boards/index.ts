@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next/types';
-import { COLLECTION } from '../../../const';
+import { COLLECTION, USER_TYPE } from '../../../const';
 import { connectToDatabase } from '../../../utils/database';
 import { unauthorized } from '../response';
 import { getServerSession } from 'next-auth/next';
@@ -23,7 +23,7 @@ const boardAPI = async (req: NextApiRequest, res: NextApiResponse) => {
     const payload = req.body as Board;
 
     payload.boardId = boardId;
-    payload.isPublic = false;
+    payload.isPublic = uid === USER_TYPE.GUEST ? true : false;
     payload.members = [{
       uid,
       permissions: ['read', 'write']

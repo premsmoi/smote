@@ -32,4 +32,8 @@ export const COLLECTION = {
   NOTES: 'notes',
   USERS: 'users',
   COUTERS: 'counters',
-}
+};
+
+export const USER_TYPE = {
+  GUEST: 'guest',
+};

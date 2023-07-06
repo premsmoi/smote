@@ -1,7 +1,9 @@
 import NextAuth, { AuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import { addNewUserProfile } from "../users";
+import { USER_TYPE } from "../../../const";
 
 export const authOptions: AuthOptions = {
   // Configure one or more authentication providers
@@ -14,7 +16,13 @@ export const authOptions: AuthOptions = {
         clientId: process.env.FACEBOOK_ID || '',
         clientSecret: process.env.FACEBOOK_SECRET || '',
     }),
-    // ...add more providers here
+    CredentialsProvider({
+      name: 'Guest',
+      credentials: {},
+      async authorize() {
+        return { id: 'guest'}
+      }
+    }),
   ],
   callbacks: {
     async session({ session, token }) {
@@ -23,6 +31,8 @@ export const authOptions: AuthOptions = {
       return session;
     },
     async signIn({ user, account }) {
+      if (user.id === USER_TYPE.GUEST) return true;
+  
       const userProfile: UserProfile = {
         uid: user.id,
         name: user.name,

@@ -43,6 +43,14 @@ declare global {
         email?: string | null;
         image?: string | null;
     }
+
+    interface ConfirmationDialog {
+        title: string;
+        message: string;
+        isShow: boolean;
+        onConfirm: () => Promise<any>;
+        onClose?: () => Promise<any>;
+    }
 }
 
 
