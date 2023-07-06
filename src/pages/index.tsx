@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Dialog, TextField, DialogTitle } from '@mui/material';
+import { Button, Dialog, TextField, DialogTitle, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { request } from '../utils/request';
 import BoardItem from '../common/components/boardItem';
@@ -44,11 +44,17 @@ const Home = () => {
           Create Board
         </Button>
       </div>
-      <div className="boardList">
+      <Grid container spacing={2} className='boardList' padding={2}>
         {
-            boards.map((board: Board) => <BoardItem key={board.boardId} board={board}/>)
+          boards.map((board: Board) => {
+            return (
+              <Grid xs={6} sm={4} md={3} xl={2} item key={board.boardId}>
+                  <BoardItem board={board}/>
+              </Grid>
+            )
+          })
         }
-      </div>
+      </Grid>
       <Dialog className="createBoardDialog" open={isShowCreateBoardDialog}>
         <DialogTitle>Create Board</DialogTitle>
         <div className="content">

@@ -7,6 +7,7 @@ import { noteColors } from '../../const';
 import { DragEventHandler } from 'react';
 import { useRecoilState } from 'recoil';
 import { confirmationDialog } from '../../atoms/confirmationDialog';
+import { Paper } from '@mui/material';
 
 const NOTE_WIDTH = 200;
 const NOTE_HEIGHT = 200;
@@ -148,7 +149,7 @@ const NoteItem: FC<Props> = props => {
     };
 
     return (
-        <div
+        <Paper
             className="noteItem"
             ref={noteItemRef}
             style={{ width: NOTE_WIDTH, height: NOTE_HEIGHT, top: y, left: x }}
@@ -157,6 +158,7 @@ const NoteItem: FC<Props> = props => {
             onDragEnd={onDragEnd}
             onClick={onClick}
             draggable={isDragging}
+            elevation={6}
         >
             <div className="header">
                 <IconButton className="toggleColorPickerButton" onClick={showColorPicker} >
@@ -169,7 +171,7 @@ const NoteItem: FC<Props> = props => {
                 {renderColorPicker()}
             </div>
             <textarea className="noteEditor" value={newText} onChange={onTextChange} />
-        </div>
+        </Paper>
     );
 };
 

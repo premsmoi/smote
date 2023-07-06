@@ -1,3 +1,4 @@
+import { Paper, Typography } from '@mui/material';
 import Link from 'next/link';
 import React from 'react';
 
@@ -9,13 +10,11 @@ const BoardItem: React.FC<Props> = props => {
     const { board } = props;
 
     return (
-        <Link href={{ pathname: `/board/${board.boardId}` }}>
-            <div className="boardItem">
-                <div className="text">
-                    {board.boardName}
-                </div>
-            </div>
-        </Link>
+        <Paper className='boardItem' elevation={3}>
+            <Link href={{ pathname: `/board/${board.boardId}` }}>
+                <Typography>{board.boardName}</Typography>
+            </Link>
+        </Paper>
     );
 };
 
