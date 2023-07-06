@@ -8,9 +8,13 @@ import LoadingBackdrop from '../common/components/loadingBackdrop';
 import Header from '../common/components/header';
 import Authenticate from '../common/components/authenticate';
 import '../styles/index.scss';
+import { Session } from 'next-auth';
 
-function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+function App({ Component, pageProps }: AppProps<{
+  session: Session;
+}>) {
   const { promiseInProgress } = usePromiseTracker();
+  const session = pageProps.session;
 
   return (
     <>

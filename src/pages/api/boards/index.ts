@@ -1,27 +1,28 @@
-import { getSession } from 'next-auth/react';
 import { NextApiRequest, NextApiResponse } from 'next/types';
 import { COLLECTION } from '../../../const';
 import { connectToDatabase } from '../../../utils/database';
 import { unauthorized } from '../response';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../auth/[...nextauth]';
 
 const boardAPI = async (req: NextApiRequest, res: NextApiResponse) => {
   const { db } = await connectToDatabase();
   const { method } = req;
-  const session = await getSession({ req })
+  const session = await getServerSession(req, res, authOptions);
 
-  if (!session) return unauthorized(res);
+  if (!session?.user?.uid) return unauthorized(res);
+
+  const { uid } = session.user;
 
   if (method === 'GET') {
-    const uid = session.uid as string;
     const boards = await db.collection(COLLECTION.BOARDS).find(getBoardsQuery(uid)).toArray();
 
     res.json({ boards });
   } else if (method === 'POST') {
-    const boarId = await getBoardId();
+    const boardId = await getBoardId();
     const payload = req.body as Board;
-    const uid = session.uid as string;
 
-    payload.boardId = boarId;
+    payload.boardId = boardId;
     payload.isPublic = false;
     payload.members = [{
       uid,

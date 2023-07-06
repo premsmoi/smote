@@ -1,9 +1,9 @@
-import NextAuth from "next-auth";
+import NextAuth, { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import { addNewUserProfile } from "../users";
 
-export default NextAuth({
+export const authOptions: AuthOptions = {
   // Configure one or more authentication providers
   providers: [
     GoogleProvider({
@@ -18,8 +18,8 @@ export default NextAuth({
   ],
   callbacks: {
     async session({ session, token }) {
-      session.uid = token.sub;
-      session.accessToken = token.accessToken;
+      session.user = { uid: token.sub }
+
       return session;
     },
     async signIn({ user, account }) {
@@ -28,7 +28,7 @@ export default NextAuth({
         name: user.name,
         email: user.email,
         image: user.image,
-        provider: account.provider,
+        provider: account?.provider || '',
       };
 
       await addNewUserProfile(userProfile);
@@ -44,4 +44,6 @@ export default NextAuth({
     }
   },
   secret: process.env.JWT_SECRET,
-})
+}
+
+export default NextAuth(authOptions)

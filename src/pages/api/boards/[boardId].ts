@@ -1,4 +1,3 @@
-import { getSession } from 'next-auth/react';
 import { NextApiRequest, NextApiResponse } from 'next/types';
 import { COLLECTION } from '../../../const';
 import { connectToDatabase } from '../../../utils/database';
@@ -6,19 +5,27 @@ import { queryStringToNumber } from '../../../utils/request';
 import { getNotesByBoardId } from '../notes';
 import { getBoardsQuery } from './index';
 import { unauthorized } from '../response';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/[...nextauth]';
 
 const boardWithIdAPI = async (req: NextApiRequest, res: NextApiResponse) => {
   const { db } = await connectToDatabase();
   const { method, query } = req;
-  const session = await getSession({ req })
+  const session = await getServerSession(req, res, authOptions);
+
+  if (!query.boardId) {
+    return res.json({ success: false });
+  }
+
   const boardId = queryStringToNumber(query.boardId);
 
-  if (!session) return unauthorized(res);
+  if (!session?.user?.uid) return unauthorized(res);
 
   if (method === 'GET') {
-    const uid = session.uid as string;
-    const boards = await db.collection(COLLECTION.BOARDS).aggregate([ { $project: { _id: 0 } }, { $match: { ...getBoardsQuery(uid), boardId } } ]).toArray();
-    const notes = await getNotesByBoardId(boardId);
+    const { uid } = session.user;
+    const aggregate = [ { $project: { _id: 0 } }, { $match: { ...getBoardsQuery(uid), boardId } } ]
+    const boards = await db.collection(COLLECTION.BOARDS).aggregate(aggregate).toArray() as Board[];
+    const notes = await getNotesByBoardId(boardId) as Note[];
     const board = boards[0];
 
     if (board) {
