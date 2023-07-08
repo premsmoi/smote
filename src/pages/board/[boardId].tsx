@@ -28,8 +28,8 @@ const Board: React.FC<Props> = props => {
     useEffect(() => {
         if (!boardId) return;
 
-        request(`${API_PATH.BOARDS}/${boardId}`).then(data => {
-            const board: Board = data.board;
+        request<Response<Board>>(`${API_PATH.BOARDS}/${boardId}`).then(res => {
+            const board: Board = res.data;
 
             sortNotesByUpdatedTime(board.notes);
             setNotes(board.notes);

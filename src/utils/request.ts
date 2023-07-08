@@ -8,8 +8,8 @@ const checkResponseStatus = (res: Response) => {
     return res;
 }
 
-export const request = (url: string, option?: RequestInit, showBackdrop = true) => {
-    const fetchPromise = fetch(url, {
+export const request = <Res>(url: string, option?: RequestInit, showBackdrop = true) => {
+    const fetchPromise: Promise<Res> = fetch(url, {
         ...option,
         headers: {
             'Content-type': 'application/json'

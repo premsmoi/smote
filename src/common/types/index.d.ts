@@ -51,11 +51,18 @@ declare global {
         onConfirm: () => Promise<any>;
         onClose?: () => Promise<any>;
     }
+
+    interface Response<T> {
+        data: T
+    }
+
+    type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 }
 
 
 declare module 'next-auth' {
     interface Session extends DefaultSession {
+        accessToken: string;
         user?: {
             uid?: string;
         } & DefaultSession['user'];
