@@ -2,7 +2,7 @@ import { type DefaultSession } from 'next-auth';
 
 declare global {
     interface Board {
-        boardId: number;
+        boardId: string;
         boardName: string;
         notes: Note[];
         members: Member[];
@@ -17,7 +17,7 @@ declare global {
     type Permission = 'read' | 'write'
     
     interface Note {
-        noteId: number;
+        noteId: string;
         text: string;
         color?: string;
         x: number;
