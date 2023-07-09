@@ -39,8 +39,9 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async session({ session, token }) {
-      session.user = { uid: token.sub }
-      session.accessToken = token.accessToken as string
+      session.user = { uid: token.sub };
+      session.accessToken = token.accessToken as string;
+      session.idToken = token.id_token as string;
 
       return session;
     },
@@ -62,7 +63,8 @@ export const authOptions: AuthOptions = {
     async jwt({ token, account }) {
       // Persist the OAuth access_token to the token right after signin
       if (account) {
-        token.accessToken = account.access_token
+        token.accessToken = account.access_token;
+        token.id_token = account.id_token;
       }
       return token
     }

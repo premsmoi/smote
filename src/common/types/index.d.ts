@@ -63,6 +63,7 @@ declare global {
 declare module 'next-auth' {
     interface Session extends DefaultSession {
         accessToken: string;
+        idToken?: string;
         user?: {
             uid?: string;
         } & DefaultSession['user'];
