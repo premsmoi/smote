@@ -20,10 +20,12 @@ const apiRoute = async (req: NextApiRequest, res: NextApiResponse) => {
     url: `http://localhost:8080/${path.join('/')}`,
     data: req.body,
     params: req.query,
-    headers: {
-      Authorization: session.idToken,
-    },
     withCredentials: true,
+    headers: {
+      'uid': session.user?.uid,
+      'google-token': session.googleToken,
+      'facebook-token': session.facebookToken,
+    }
   });
 
   res.json(data);
