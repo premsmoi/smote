@@ -8,9 +8,12 @@ const apiRoute = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(500);
   }
 
-  console.log(req.body)
-
-  const { data } = await axios.request({ ...req, url: `http://localhost:8080/${path.join('/')}`, data: req.body });
+  const { data } = await axios.request({
+    ...req,
+    url: `http://localhost:8080/${path.join('/')}`,
+    data: req.body,
+    params: req.query,
+  });
 
   res.json(data);
 };

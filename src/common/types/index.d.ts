@@ -31,7 +31,7 @@ declare global {
     }
     
     interface DragNoteData {
-        noteId: number;
+        noteId: string;
         offsetX: number;
         offsetY: number;
     }

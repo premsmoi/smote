@@ -11,33 +11,37 @@ import { API_PATH } from '../../const';
 import { sortNotesByUpdatedTime } from '../../utils/notes';
 import { confirmationDialog } from '../../atoms/confirmationDialog';
 import { useRecoilState } from 'recoil';
+import useBoard from '../../hooks/useBoard';
 
 interface Props {
 }
 
 const Board: React.FC<Props> = props => {
-    const [board, setBoard] = useState<Board>();
+    const router = useRouter();
+    const boardId = router.query.boardId as string;
+    const { board, setBoard } = useBoard(boardId);
     const [notes, setNotes] = useState<Note[]>([]);
     const [isPublic, setIsPublic] = useState(false);
     const [isShowEditBoardDialog, setIsShowEditBoardDialog] = useState(false);
     const [newBoardName, setNewBoardName] = useState('');
     const [confirmationDialogData, setConfirmationDialogData] = useRecoilState(confirmationDialog);
-    const router = useRouter();
-    const boardId = router.query.boardId as string;
 
     useEffect(() => {
         if (!boardId) return;
 
-        request<Response<Board>>(`${API_PATH.BOARDS}/${boardId}`).then(res => {
-            const board: Board = res.data;
+        request<Response<Note[]>>(`${API_PATH.NOTES}?boardId=${boardId}`).then(res => {
+            const notes: Note[] = res.data;
 
-            sortNotesByUpdatedTime(board.notes);
-            setNotes(board.notes);
-            setBoard(board);
-            setNewBoardName(board.boardName);
-            setIsPublic(board.isPublic);
+            sortNotesByUpdatedTime(notes);
+            setNotes(notes);
         }).catch(() => router.replace('/'));
     }, [boardId, router]);
+
+    useEffect(() => {
+        if (!board) return;
+
+        setNewBoardName(board.boardName);
+    }, [board])
 
     const updateBoard = () => {
         if (!board) return;
@@ -48,11 +52,11 @@ const Board: React.FC<Props> = props => {
             isPublic,
         };
 
-        request(API_PATH.BOARDS, {
+        request<Response<Board>>(API_PATH.BOARDS, {
           method: 'PUT',
-          body: JSON.stringify({ board: updatedBoard })
-        }).then(result => {
-            if (result.success) {
+          body: JSON.stringify(updatedBoard)
+        }).then(res => {
+            if (res.data) {
                 hideEditBoardDialog();
                 setBoard(updatedBoard);
             }
@@ -60,17 +64,17 @@ const Board: React.FC<Props> = props => {
     };
 
     const handleAddNote = () => {
-        request(API_PATH.NOTES, {
+        request<Response<Note>>(API_PATH.NOTES, {
           method: 'POST',
           body: JSON.stringify({
               text: 'New Note...',
-              boardId: parseInt(boardId, 10),
+              boardId,
               x: 30,
               y: 30,
               updatedTime: Date.now(),
         })
-        }).then(data => {
-            const newNote = data.note as Note;
+        }).then(res => {
+            const newNote = res.data;
             const newNoteList = [ ...notes, newNote];
 
             sortNotesByUpdatedTime(newNoteList);
@@ -86,11 +90,11 @@ const Board: React.FC<Props> = props => {
 
         return request(API_PATH.NOTES, {
           method: 'PUT',
-          body: JSON.stringify({ note: updatedNote, })
+          body: JSON.stringify(updatedNote)
         }, false);
     }
 
-    const handleDeleteNote = (noteId: number) => {
+    const handleDeleteNote = (noteId: string) => {
         return request(`${API_PATH.NOTES}/${noteId}`, {
           method: 'DELETE',
         }).then(() => {
