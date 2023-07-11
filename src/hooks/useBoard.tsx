@@ -16,7 +16,7 @@ const useBoard = (boardId: string) => {
                 setBoard(board);
             })
         }
-    }, [])
+    }, [boardId])
 
     return { board, setBoard }
 };
