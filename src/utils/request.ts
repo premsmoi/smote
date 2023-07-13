@@ -1,6 +1,6 @@
 import { trackPromise} from 'react-promise-tracker';
 
-const checkResponseStatus = (res: Response) => {
+const checkResponseStatus = (res: Response<any>) => {
     if (res.status === 401) {
         throw Error('Unathorized');
     };
