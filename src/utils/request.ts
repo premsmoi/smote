@@ -1,6 +1,6 @@
 import { trackPromise} from 'react-promise-tracker';
 
-const checkResponseStatus = (res: Response) => {
+const checkResponseStatus = (res: Response<any>) => {
     if (res.status === 401) {
         throw Error('Unathorized');
     };
@@ -8,8 +8,8 @@ const checkResponseStatus = (res: Response) => {
     return res;
 }
 
-export const request = (url: string, option?: RequestInit, showBackdrop = true) => {
-    const fetchPromise = fetch(url, {
+export const request = <Res>(url: string, option?: RequestInit, showBackdrop = true) => {
+    const fetchPromise: Promise<Res> = fetch(url, {
         ...option,
         headers: {
             'Content-type': 'application/json'

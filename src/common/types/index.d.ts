@@ -2,7 +2,7 @@ import { type DefaultSession } from 'next-auth';
 
 declare global {
     interface Board {
-        boardId: number;
+        boardId: string;
         boardName: string;
         notes: Note[];
         members: Member[];
@@ -17,7 +17,7 @@ declare global {
     type Permission = 'read' | 'write'
     
     interface Note {
-        noteId: number;
+        noteId: string;
         text: string;
         color?: string;
         x: number;
@@ -31,7 +31,7 @@ declare global {
     }
     
     interface DragNoteData {
-        noteId: number;
+        noteId: string;
         offsetX: number;
         offsetY: number;
     }
@@ -51,11 +51,19 @@ declare global {
         onConfirm: () => Promise<any>;
         onClose?: () => Promise<any>;
     }
+
+    interface Response<T> {
+        data: T
+    }
+
+    type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 }
 
 
 declare module 'next-auth' {
     interface Session extends DefaultSession {
+        googleToken?: string;
+        facebookToken?: string;
         user?: {
             uid?: string;
         } & DefaultSession['user'];

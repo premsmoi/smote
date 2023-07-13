@@ -3,6 +3,7 @@ import { Button, Dialog, TextField, DialogTitle, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { request } from '../utils/request';
 import BoardItem from '../common/components/boardItem';
+import { API_PATH } from '../const';
 
 const Home = () => {
   const [boards, setBoards] = useState<Board[]>([]);
@@ -10,17 +11,17 @@ const Home = () => {
   const [newBoardName, setNewBoardName] = useState('');
 
   useEffect(() => {
-    request('/api/boards').then(data => setBoards(data.boards));
+    request<Response<Board[]>>(API_PATH.BOARDS).then((res) => setBoards(res.data));
   }, []);
 
   const handleAddBoard = () => {
-    request('/api/boards', {
+    request<Response<Board>>(API_PATH.BOARDS, {
       method: 'POST',
       body: JSON.stringify({ boardName: newBoardName || 'New Board' })
-    }).then(data => {
+    }).then(res => {
       closeCreateBoardDialog();
       resetNewBoardName();
-      setBoards([ ...boards, data.board]);
+      setBoards([ ...boards, res.data]);
     })
   };
 

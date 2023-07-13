@@ -15,7 +15,7 @@ const NOTE_HEIGHT = 200;
 interface Props {
     note: Note;
     isActive?: boolean;
-    onDelete: (noteId: number) => Promise<any>;
+    onDelete: (noteId: string) => Promise<any>;
     onUpdate: (note: Note) => Promise<any>;
 };
 

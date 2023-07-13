@@ -2,8 +2,21 @@ import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
-import { addNewUserProfile } from "../users";
-import { USER_TYPE } from "../../../const";
+import { COLLECTION, USER_TYPE } from "../../../const";
+import { connectToDatabase } from "../../../utils/database";
+
+export const addNewUserProfile = async (user: UserProfile): Promise<boolean> => {
+  const { db } = await connectToDatabase();
+  const checkedUser = await db.collection(COLLECTION.USERS).findOne({ uid: user.uid }) as any;
+
+  if (checkedUser) {
+    return false;
+  }
+
+  await db.collection(COLLECTION.USERS).insertOne({ ...user });
+
+  return true;
+}
 
 export const authOptions: AuthOptions = {
   // Configure one or more authentication providers
@@ -26,7 +39,9 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async session({ session, token }) {
-      session.user = { uid: token.sub }
+      session.user = { uid: token.sub };
+      session.googleToken = token.googleToken as string;
+      session.facebookToken = token.facebookToken as string;
 
       return session;
     },
@@ -46,9 +61,12 @@ export const authOptions: AuthOptions = {
       return true;
     },
     async jwt({ token, account }) {
-      // Persist the OAuth access_token to the token right after signin
       if (account) {
-        token.accessToken = account.access_token
+        if (account.provider === 'google') {
+          token.googleToken = account.id_token
+        } else if (account.provider === 'facebook') {
+          token.facebookToken = account.access_token
+        }
       }
       return token
     }
