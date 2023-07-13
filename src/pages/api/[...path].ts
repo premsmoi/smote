@@ -17,8 +17,8 @@ const apiRoute = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const { data } = await axios.request({
     ...req,
-    url: `http://localhost:8080/${path.join('/')}`,
-    data: req.body,
+    url: `https://smote-service-yq7g2xs3nq-as.a.run.app/${path.join('/')}`,
+    data: req.method === 'GET' ? undefined : req.body,
     params: req.query,
     withCredentials: true,
     headers: {
