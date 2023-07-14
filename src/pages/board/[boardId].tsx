@@ -1,4 +1,4 @@
-import React, { useEffect, useState, DragEventHandler } from 'react';
+import React, { useEffect, useState, DragEventHandler, useRef, MouseEvent } from 'react';
 import { useRouter } from 'next/router'
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
@@ -18,6 +18,7 @@ interface Props {
 
 const Board: React.FC<Props> = props => {
     const router = useRouter();
+    const boardRef = useRef<HTMLDivElement>(null);
     const boardId = router.query.boardId as string;
     const { board, setBoard } = useBoard(boardId);
     const [notes, setNotes] = useState<Note[]>([]);
@@ -25,6 +26,7 @@ const Board: React.FC<Props> = props => {
     const [isShowEditBoardDialog, setIsShowEditBoardDialog] = useState(false);
     const [newBoardName, setNewBoardName] = useState('');
     const [confirmationDialogData, setConfirmationDialogData] = useRecoilState(confirmationDialog);
+    let x: number, y: number;
 
     useEffect(() => {
         if (!boardId) return;
@@ -148,6 +150,52 @@ const Board: React.FC<Props> = props => {
         handleUpdateNote(targetNote);
     };
 
+    const onMouseMove = (e: any) => {
+        const boardElement = boardRef.current
+
+        if (!boardElement) return;
+
+        const offsetX = x - e.clientX
+        const offsetY = y - e.clientY
+
+        boardElement.scrollLeft += offsetX;
+        boardElement.scrollTop += offsetY;
+
+        x = e.clientX;
+        y = e.clientY;
+    }
+
+    const onMouseDown = (e: MouseEvent) => {
+        const target = e.target as HTMLDivElement
+
+        if (target.className !== 'boardArea') return;
+
+        target.style.cursor = 'grab';
+
+        x = e.clientX;
+        y = e.clientY;
+
+        const boardElement = boardRef.current
+
+        if (boardElement) {
+            boardElement.onmousemove = onMouseMove
+        }
+    }
+
+    const onMouseUp = (e: MouseEvent) => {
+        const target = e.target as HTMLDivElement
+
+        if (target.className !== 'boardArea') return;
+        
+        const boardElement = boardRef.current
+
+        if (boardElement) {
+            boardElement.onmousemove = null
+        }
+
+        target.style.cursor = 'unset';
+    }
+
     const handleToggleIsPublic = (event: React.ChangeEvent<HTMLInputElement>) => {
         setIsPublic(event.target.checked);
     };
@@ -192,8 +240,17 @@ const Board: React.FC<Props> = props => {
                         </Button>
                     </div>
                 </div>
-                <div className="boardContainer">
-                    <div className="boardArea" onDragOver={onDragOver} onDrop={onDrop}>
+                <div
+                    className="boardContainer"
+                    ref={boardRef}
+                >
+                    <div
+                        className="boardArea"
+                        onDragOver={onDragOver}
+                        onDrop={onDrop}
+                        onMouseDown={onMouseDown}
+                        onMouseUp={onMouseUp}
+                    >
                     {
                         notes.map((note, index) => (
                             <NoteItem
