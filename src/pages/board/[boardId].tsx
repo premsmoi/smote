@@ -1,4 +1,4 @@
-import React, { useEffect, useState, DragEventHandler, useRef, ReactMouseEvent as ReactMouseEvent } from 'react';
+import React, { useEffect, useState, DragEventHandler, useRef, MouseEvent as ReactMouseEvent } from 'react';
 import { useRouter } from 'next/router'
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';

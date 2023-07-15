@@ -21,8 +21,10 @@ function App({ Component, pageProps }: AppProps<{
       </Head>
       <RecoilRoot>
         <Authenticate>
-          <Header />
-          <Component {...pageProps} />
+          <>
+            <Header />
+            <Component {...pageProps} />
+          </>
         </Authenticate>
         <ConfirmationDialog />
         <LoadingBackdrop show={promiseInProgress} />
