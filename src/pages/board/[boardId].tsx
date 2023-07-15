@@ -150,7 +150,7 @@ const Board: React.FC<Props> = props => {
         handleUpdateNote(targetNote);
     };
 
-    const onMouseMove = (e: any) => {
+    const handleSwipe = (e: any) => {
         const boardElement = boardRef.current
 
         if (!boardElement) return;
@@ -165,7 +165,7 @@ const Board: React.FC<Props> = props => {
         y = e.clientY;
     }
 
-    const onMouseDown = (e: MouseEvent) => {
+    const handleStartSwipe = (e: MouseEvent) => {
         const target = e.target as HTMLDivElement
 
         if (target.className !== 'boardArea') return;
@@ -178,11 +178,11 @@ const Board: React.FC<Props> = props => {
         const boardElement = boardRef.current
 
         if (boardElement) {
-            boardElement.onmousemove = onMouseMove
+            boardElement.onmousemove = handleSwipe
         }
     }
 
-    const onMouseUp = (e: MouseEvent) => {
+    const handleEndSwipe = (e: MouseEvent) => {
         const target = e.target as HTMLDivElement
 
         if (target.className !== 'boardArea') return;
@@ -248,8 +248,9 @@ const Board: React.FC<Props> = props => {
                         className="boardArea"
                         onDragOver={onDragOver}
                         onDrop={onDrop}
-                        onMouseDown={onMouseDown}
-                        onMouseUp={onMouseUp}
+                        onMouseDown={handleStartSwipe}
+                        onMouseUp={handleEndSwipe}
+                        onMouseLeave={handleEndSwipe}
                     >
                     {
                         notes.map((note, index) => (
