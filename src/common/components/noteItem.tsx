@@ -15,9 +15,9 @@ const NOTE_HEIGHT = 200;
 interface Props {
     note: Note;
     isActive?: boolean;
-    onDelete: (noteId: string) => Promise<any>;
-    onUpdate: (note: Note) => Promise<any>;
-};
+    onDelete: (noteId: string) => Promise<null>;
+    onUpdate: (note: Note) => Promise<null>;
+}
 
 const NoteItem: FC<Props> = props => {
     const { note, isActive, onDelete, onUpdate } = props;
@@ -26,9 +26,9 @@ const NoteItem: FC<Props> = props => {
     const [color, setColor] = useState(note.color || 'yellow');
     const [isDragging, setIsDragging] = useState(false);
     const [isShowColorPicker, setIsShowColorPicker] = useState(false);
-    const [confirmationDialogData, setConfirmationDialogData] = useRecoilState(confirmationDialog);
-    let noteItemRef = useRef<HTMLDivElement>(null);
-    let colorPickerRef = useRef<HTMLDivElement>(null);
+    const [, setConfirmationDialogData] = useRecoilState(confirmationDialog);
+    const noteItemRef = useRef<HTMLDivElement>(null);
+    const colorPickerRef = useRef<HTMLDivElement>(null);
 
     useLayoutEffect(() => {
         const noteItem = noteItemRef.current;
@@ -77,7 +77,7 @@ const NoteItem: FC<Props> = props => {
         e.dataTransfer.setData('dragNoteData', JSON.stringify(dragNoteData));
     };
 
-    const onDragEnd: DragEventHandler = (e) => {
+    const onDragEnd: DragEventHandler = () => {
         setIsDragging(false);
 
         const noteItem = noteItemRef.current;
@@ -170,7 +170,7 @@ const NoteItem: FC<Props> = props => {
                 </IconButton>
                 {renderColorPicker()}
             </div>
-            <textarea className="noteEditor" value={newText} onChange={onTextChange} />
+            <textarea className="noteEditor" value={newText} placeholder="Write your idea here.." onChange={onTextChange} />
         </Paper>
     );
 };

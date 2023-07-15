@@ -40,7 +40,7 @@ const Home = () => {
 
   return (
     <div className="home">
-      <div className="buttonsContainer">
+      <div className="button-container">
         <Button variant="contained" startIcon={<AddIcon />} size="large" onClick={openCreateBoardDialog}>
           Create Board
         </Button>

@@ -10,7 +10,7 @@ interface Props {
 
 const BoardItem: React.FC<Props> = props => {
     const { board } = props;
-    const [ _, setBoard] = useRecoilState(boardAtom);
+    const [, setBoard] = useRecoilState(boardAtom);
 
     return (
         <Paper className='boardItem' elevation={3}>

@@ -7,7 +7,7 @@ import { connectToDatabase } from "../../../utils/database";
 
 export const addNewUserProfile = async (user: UserProfile): Promise<boolean> => {
   const { db } = await connectToDatabase();
-  const checkedUser = await db.collection(COLLECTION.USERS).findOne({ uid: user.uid }) as any;
+  const checkedUser = await db.collection(COLLECTION.USERS).findOne({ uid: user.uid });
 
   if (checkedUser) {
     return false;

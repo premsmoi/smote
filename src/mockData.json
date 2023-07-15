@@ -1,7 +1,7 @@
 [
     {
         "boardId": "1",
-        "boardName": "General",
+        "board-name": "General",
         "notes": [
             {
                 "noteId": "1",
@@ -17,7 +17,7 @@
     },
     {
         "boardId": "2",
-        "boardName": "LSEG",
+        "board-name": "LSEG",
         "notes": [
             {
                 "noteId": "1",

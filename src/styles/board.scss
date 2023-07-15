@@ -6,16 +6,26 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 10px 30px;
+        padding: 10px 16px;
 
-        .boardName {
+        .board-name {
             font-size: 36px;
             margin-right: 30px;
         }
 
-        .buttonsContainer {
+        .button-container {
+            .add-button {
+                position: fixed;
+                bottom: 16px;
+                right: 16px;
+                z-index: 2;
+                background-color: #1976d2;
+                color: white;
+                box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12);
+            }
+
             button {
-                margin-right: 10px;
+                margin-left: 10px;
             }
             
             svg {
@@ -27,7 +37,7 @@
 
     .boardContainer {
         overflow: scroll;
-        height: calc(100vh - 120px);
+        height: 100vh;
 
         /* Hide scrollbar for Chrome, Safari and Opera */
         &::-webkit-scrollbar {

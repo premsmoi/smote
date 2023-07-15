@@ -1,10 +1,10 @@
-import React, { useEffect, useState, DragEventHandler, useRef, MouseEvent } from 'react';
+import React, { useEffect, useState, DragEventHandler, useRef, ReactMouseEvent as ReactMouseEvent } from 'react';
 import { useRouter } from 'next/router'
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-import { Button, Dialog, FormControlLabel, FormGroup, Switch } from '@mui/material';
+import { Button, Dialog, FormControlLabel, FormGroup, IconButton, Switch } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { request } from '../../utils/request';
 import NoteItem from '../../common/components/noteItem';
 import { API_PATH } from '../../const';
@@ -16,7 +16,7 @@ import useBoard from '../../hooks/useBoard';
 interface Props {
 }
 
-const Board: React.FC<Props> = props => {
+const Board: React.FC<Props> = () => {
     const router = useRouter();
     const boardRef = useRef<HTMLDivElement>(null);
     const boardId = router.query.boardId as string;
@@ -25,7 +25,7 @@ const Board: React.FC<Props> = props => {
     const [isPublic, setIsPublic] = useState(false);
     const [isShowEditBoardDialog, setIsShowEditBoardDialog] = useState(false);
     const [newBoardName, setNewBoardName] = useState('');
-    const [confirmationDialogData, setConfirmationDialogData] = useRecoilState(confirmationDialog);
+    const [, setConfirmationDialogData] = useRecoilState(confirmationDialog);
     let x: number, y: number;
 
     useEffect(() => {
@@ -69,7 +69,6 @@ const Board: React.FC<Props> = props => {
         request<Response<Note>>(API_PATH.NOTES, {
           method: 'POST',
           body: JSON.stringify({
-              text: 'New Note...',
               boardId,
               x: 30,
               y: 30,
@@ -150,7 +149,7 @@ const Board: React.FC<Props> = props => {
         handleUpdateNote(targetNote);
     };
 
-    const handleSwipe = (e: any) => {
+    const handleSwipe = (e: MouseEvent) => {
         const boardElement = boardRef.current
 
         if (!boardElement) return;
@@ -165,7 +164,7 @@ const Board: React.FC<Props> = props => {
         y = e.clientY;
     }
 
-    const handleStartSwipe = (e: MouseEvent) => {
+    const handleStartSwipe = (e: ReactMouseEvent) => {
         const target = e.target as HTMLDivElement
 
         if (target.className !== 'boardArea') return;
@@ -182,10 +181,8 @@ const Board: React.FC<Props> = props => {
         }
     }
 
-    const handleEndSwipe = (e: MouseEvent) => {
+    const handleEndSwipe = (e: ReactMouseEvent) => {
         const target = e.target as HTMLDivElement
-
-        if (target.className !== 'boardArea') return;
         
         const boardElement = boardRef.current
 
@@ -228,16 +225,16 @@ const Board: React.FC<Props> = props => {
         <div className="board">
             {board && <div className="body">
                 <div className="toolbar">
-                    <div className='boardName'>
+                    <div className='board-name'>
                         {board?.boardName}
                     </div>
-                    <div className="buttonsContainer">
-                        <Button variant="contained" startIcon={<AddIcon />} size="large" onClick={handleAddNote}>
-                            New Note
-                        </Button>
-                        <Button variant="contained" startIcon={<EditIcon />} size="large" onClick={showEditBoardDialog}>
-                            Edit
-                        </Button>
+                    <div className="button-container">
+                        <IconButton className='add-button' size="large" onClick={handleAddNote}>
+                            <AddIcon sx={{ fontSize: 48 }} />
+                        </IconButton>
+                        <IconButton size="large" onClick={showEditBoardDialog}>
+                            <SettingsIcon sx={{ fontSize: 36 }} />
+                        </IconButton>
                     </div>
                 </div>
                 <div
