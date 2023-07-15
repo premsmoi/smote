@@ -70,8 +70,8 @@ const Board: React.FC<Props> = () => {
           method: 'POST',
           body: JSON.stringify({
               boardId,
-              x: 30,
-              y: 30,
+              x: 100,
+              y: 100,
               updatedTime: Date.now(),
         })
         }).then(res => {
@@ -83,7 +83,7 @@ const Board: React.FC<Props> = () => {
           });
     };
 
-    const handleUpdateNote = (updatedNote: Note) => {
+    const handleUpdateNote = (updatedNote: Note): Promise<void> => {
         updatedNote.updatedTime = Date.now();
 
         sortNotesByUpdatedTime(notes);
@@ -167,7 +167,7 @@ const Board: React.FC<Props> = () => {
     const handleStartSwipe = (e: ReactMouseEvent) => {
         const target = e.target as HTMLDivElement
 
-        if (target.className !== 'boardArea') return;
+        if (target.className !== 'board-area') return;
 
         target.style.cursor = 'grab';
 
@@ -233,16 +233,16 @@ const Board: React.FC<Props> = () => {
                             <AddIcon sx={{ fontSize: 48 }} />
                         </IconButton>
                         <IconButton size="large" onClick={showEditBoardDialog}>
-                            <SettingsIcon sx={{ fontSize: 36 }} />
+                            <SettingsIcon sx={{ fontSize: 30 }} />
                         </IconButton>
                     </div>
                 </div>
                 <div
-                    className="boardContainer"
+                    className="board-container"
                     ref={boardRef}
                 >
                     <div
-                        className="boardArea"
+                        className="board-area"
                         onDragOver={onDragOver}
                         onDrop={onDrop}
                         onMouseDown={handleStartSwipe}

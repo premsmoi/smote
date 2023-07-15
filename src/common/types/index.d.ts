@@ -48,8 +48,8 @@ declare global {
         title: string;
         message: string;
         isShow: boolean;
-        onConfirm: () => Promise<null>;
-        onClose?: () => Promise<null>;
+        onConfirm: () => Promise<void>;
+        onClose?: () => Promise<void>;
     }
 
     interface Response<T> {

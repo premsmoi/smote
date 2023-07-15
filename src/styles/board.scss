@@ -1,16 +1,24 @@
+@use 'variables' as v;
 
 .board {
-    height: calc(100vh - 55px);
+    position: relative;
+    height: calc(100vh - v.$header-height - 1px);
 
     .toolbar {
+        position: absolute;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        padding: 10px 16px;
+        padding: 0 8px;
+        height: 45px;
+        z-index: 2;
+        top: 12px;
+        left: 12px;
+        background-color: white;
+        box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12);
+        border-radius: 8px;
 
         .board-name {
-            font-size: 36px;
-            margin-right: 30px;
+            font-size: 30px;
         }
 
         .button-container {
@@ -35,9 +43,9 @@
 
     }
 
-    .boardContainer {
+    .board-container {
         overflow: scroll;
-        height: 100vh;
+        height: calc(100vh - v.$header-height - 1px);
 
         /* Hide scrollbar for Chrome, Safari and Opera */
         &::-webkit-scrollbar {
@@ -47,7 +55,7 @@
         -ms-overflow-style: none;  /* IE and Edge */
         scrollbar-width: none;  /* Firefox */
 
-        .boardArea {
+        .board-area {
             width: 2560px;
             height: 1440px;
             position: relative;
