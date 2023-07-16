@@ -1,10 +1,10 @@
-import { ReactChild, useEffect } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { useRecoilState } from "recoil";
 import { getSession, signIn } from "next-auth/react"
 import { userProfileAtom } from '../../atoms/authentication';
 
 interface Props {
-  children: any
+  children: ReactElement
 }
 
 const Authenticate = (props: Props) => {
@@ -19,7 +19,7 @@ const Authenticate = (props: Props) => {
         signIn();
       }
     });
-  }, []);
+  }, [setUserProfile]);
 
   return userProfile ? props.children : null;
 }

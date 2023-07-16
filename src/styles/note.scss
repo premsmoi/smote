@@ -1,4 +1,4 @@
-.noteItem {
+.note-item {
     border: 2px solid black;
     line-height: 50px;
     padding: 5px;
@@ -12,10 +12,11 @@
         display: flex;
         justify-content: space-between;
 
-        .moveNoteArea {
+        .move-note-area {
             width: 100%;
             height: inherit;
             cursor: grab;
+            touch-action: none
         }
           
         .colorPicker {
