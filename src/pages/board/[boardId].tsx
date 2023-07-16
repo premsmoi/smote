@@ -100,6 +100,10 @@ const Board: React.FC<Props> = () => {
   const handleUpdateNote = (updatedNote: Note): Promise<void> => {
     updatedNote.updatedTime = Date.now();
 
+    const index = notes.findIndex((note) => note.noteId === updatedNote.noteId);
+
+    notes[index] = updatedNote;
+
     sortNotesByUpdatedTime(notes);
     setNotes([...notes]);
 
