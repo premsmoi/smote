@@ -12,10 +12,11 @@
         display: flex;
         justify-content: space-between;
 
-        .moveNoteArea {
+        .move-note-area {
             width: 100%;
             height: inherit;
             cursor: grab;
+            touch-action: none
         }
           
         .colorPicker {

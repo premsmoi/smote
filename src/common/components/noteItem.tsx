@@ -4,7 +4,8 @@ import React, {
   ChangeEventHandler,
   useState,
   useRef,
-  useLayoutEffect
+  useLayoutEffect,
+  TouchEvent
 } from 'react';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
@@ -36,6 +37,7 @@ const NoteItem: FC<Props> = (props) => {
   const [, setConfirmationDialogData] = useRecoilState(confirmationDialog);
   const noteItemRef = useRef<HTMLDivElement>(null);
   const colorPickerRef = useRef<HTMLDivElement>(null);
+  const noteElementId = `note-item-${noteId}`;
 
   useLayoutEffect(() => {
     const noteItem = noteItemRef.current;
@@ -163,57 +165,41 @@ const NoteItem: FC<Props> = (props) => {
     });
   };
 
-  const handleTouchMove = (e, noteId: string) => {
+  const handleTouchMove = (e: TouchEvent) => {
     // grab the location of touch
     const touchLocation = e.targetTouches[0];
 
     const noteElement = document.getElementById(
-      `note-item-${noteId}`
+      noteElementId
     ) as HTMLDivElement;
 
     if (!noteElement) return;
 
     const boardElement = document.getElementsByClassName(
-      'board-area'
+      'board-container'
     )[0] as HTMLDivElement;
 
     if (!boardElement) return;
 
-    console.log('touchLocation', touchLocation);
-
-    noteElement.style.left = touchLocation.pageX - 100 + 'px';
-    noteElement.style.top = touchLocation.pageY - 100 + 'px';
+    noteElement.style.left =
+      boardElement.scrollLeft + touchLocation.pageX - NOTE_WIDTH / 2 + 'px';
+    noteElement.style.top =
+      boardElement.scrollTop +
+      touchLocation.pageY -
+      NOTE_HEIGHT / 2 +
+      25 +
+      'px';
+    noteElement.style.zIndex = '2';
   };
 
-  const handleTouchStart = (e) => {
-    const boardElement = document.getElementsByClassName(
-      'board-area'
-    )[0] as HTMLDivElement;
-
-    if (!boardElement) return;
-
-    // boardElement.style.height = '100%';
-    // boardElement.style.width = '100%';
-    boardElement.style.touchAction = 'none';
-  };
-
-  const handleTouchEnd = (e) => {
-    const boardElement = document.getElementsByClassName(
-      'board-area'
-    )[0] as HTMLDivElement;
-
-    if (!boardElement) return;
-
-    boardElement.style.height = '';
-    boardElement.style.width = '';
-    boardElement.style.overflow = '';
-    boardElement.style.touchAction = '';
-
+  const handleTouchEnd = () => {
     const noteElement = document.getElementById(
-      `note-item-${noteId}`
+      noteElementId
     ) as HTMLDivElement;
 
     if (!noteElement) return;
+
+    noteElement.style.zIndex = '';
 
     handleUpdateNote({
       ...note,
@@ -247,10 +233,9 @@ const NoteItem: FC<Props> = (props) => {
           )}
         </IconButton>
         <div
-          className="moveNoteArea"
+          className="move-note-area"
           onMouseDown={() => setIsDragging(true)}
-          onTouchMove={(e) => handleTouchMove(e, noteId)}
-          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         ></div>
         <IconButton
