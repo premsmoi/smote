@@ -1,8 +1,9 @@
 import { trackPromise} from 'react-promise-tracker';
+import { signOut } from "next-auth/react"
 
 const checkResponseStatus = (res: Response<unknown>) => {
     if (res.status === 401) {
-        throw Error('Unathorized');
+        signOut();
     }
 
     return res;
