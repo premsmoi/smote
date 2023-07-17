@@ -181,8 +181,6 @@ const Board: React.FC<Props> = () => {
     const offsetX = x - e.clientX;
     const offsetY = y - e.clientY;
 
-    console.log({ x, y });
-
     boardElement.scrollLeft += offsetX;
     boardElement.scrollTop += offsetY;
 
