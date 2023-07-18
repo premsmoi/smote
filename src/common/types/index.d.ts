@@ -18,6 +18,7 @@ declare global {
     
     interface Note {
         noteId: string;
+        boardId: string;
         text: string;
         color?: string;
         x: number;

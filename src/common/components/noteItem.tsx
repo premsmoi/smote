@@ -220,6 +220,7 @@ const NoteItem: FC<Props> = (props) => {
       onClick={onClick}
       draggable={isDragging}
       elevation={6}
+      data-test-id={`note-item-${noteId}`}
     >
       <div className="header">
         <IconButton
@@ -248,6 +249,7 @@ const NoteItem: FC<Props> = (props) => {
       </div>
       <textarea
         className="noteEditor"
+        data-test-id="note-editor"
         value={newText}
         placeholder="Write your idea here.."
         onChange={onTextChange}
