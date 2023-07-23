@@ -1,4 +1,4 @@
-import { act, queryByTestId, screen } from '@testing-library/react';
+import { act, fireEvent, queryByTestId, screen } from '@testing-library/react';
 import NoteItem from '../src/common/components/noteItem';
 import { renderApp } from './app.test';
 
@@ -12,22 +12,53 @@ const note: Note = {
   updatedTime: Date.now()
 };
 
+const onDelete = jest.fn().mockResolvedValue(null);
+const onUpdate = jest.fn().mockResolvedValue(null);
+
 const renderNoteItem = (note: Note) => {
   return renderApp(
-    <NoteItem
-      note={note}
-      onDelete={() => Promise.resolve()}
-      onUpdate={() => Promise.resolve()}
-    />
+    <NoteItem note={note} onDelete={onDelete} onUpdate={onUpdate} />
   );
 };
 
 describe('NoteItem', () => {
   it('should render text correctly', () => {
-    renderNoteItem(note);
-    const text = screen.getByText('test');
+    const { getByTestId } = renderNoteItem(note);
+    const noteEditor = getByTestId('note-editor');
 
-    expect(text).toBeInTheDocument();
+    expect(noteEditor).toBeInTheDocument();
+    expect(noteEditor.textContent).toEqual('test');
+  });
+
+  it('should update text correctly', () => {
+    const { getByTestId } = renderNoteItem(note);
+    const noteEditor = getByTestId('note-editor');
+
+    expect(noteEditor.textContent).toEqual('test');
+
+    act(() => {
+      fireEvent.change(noteEditor, { target: { value: '123' } });
+    });
+
+    expect(noteEditor.textContent).toEqual('123');
+
+    act(() => {
+      fireEvent.blur(noteEditor);
+    });
+
+    expect(note.text).toEqual('123');
+
+    act(() => {
+      fireEvent.change(noteEditor, { target: { value: '123' } });
+    });
+
+    expect(noteEditor.textContent).toEqual('123');
+
+    act(() => {
+      fireEvent.blur(noteEditor);
+    });
+
+    expect(note.text).toEqual('123');
   });
 
   it('should render placeholder correctly', () => {
@@ -81,7 +112,7 @@ describe('NoteItem', () => {
     expect(noteItem.style.backgroundColor).toEqual('rgb(154, 255, 150)');
   });
 
-  it('should show delete note confirmation dialog correctly', () => {
+  it('should delete note correctly', async () => {
     const { getByTestId, getByText } = renderNoteItem(note);
     const deleteNoteButton = getByTestId('delete-note-button');
 
@@ -92,5 +123,13 @@ describe('NoteItem', () => {
     });
 
     expect(getByText('Delete Note Confirmation')).toBeInTheDocument();
+
+    const confirmButton = getByTestId('confirmation-ok');
+
+    await act(async () => {
+      confirmButton.click();
+    });
+
+    expect(onDelete).toHaveBeenCalledTimes(1);
   });
 });

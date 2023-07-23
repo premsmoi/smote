@@ -48,7 +48,8 @@
     "build-image": "docker build -t smote-image .",
     "image": "docker run -dp 3000:3000 smote-image",
     "start": "next start",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "browserslist": {
     "production": [

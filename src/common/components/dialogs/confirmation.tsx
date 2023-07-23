@@ -38,7 +38,11 @@ const ConfirmationDialog = () => {
         <DialogContentText className="message">{message}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button variant="contained" onClick={handleConfirm}>
+        <Button
+          variant="contained"
+          onClick={handleConfirm}
+          data-testid="confirmation-ok"
+        >
           OK
         </Button>
         <Button variant="outlined" onClick={handleClose}>
