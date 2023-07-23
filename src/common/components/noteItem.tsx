@@ -133,6 +133,7 @@ const NoteItem: FC<Props> = (props) => {
               className="color"
               style={{ backgroundColor, borderColor }}
               onClick={() => onColorSelected(color)}
+              data-testid={`color-${color}`}
             ></div>
           );
         })}
@@ -210,7 +211,7 @@ const NoteItem: FC<Props> = (props) => {
       onClick={onClick}
       draggable={isDragging}
       elevation={6}
-      data-test-id={`note-item-${noteId}`}
+      data-testid={`note-item-${noteId}`}
     >
       <div className="header">
         <IconButton
@@ -234,8 +235,9 @@ const NoteItem: FC<Props> = (props) => {
           onTouchEnd={handleTouchEnd}
         ></div>
         <IconButton
-          className="deleteNoteButton"
+          className="delete-note-button"
           onClick={openDeleteNoteConfirmationDialog}
+          data-testid="delete-note-button"
         >
           <CloseIcon />
         </IconButton>
