@@ -233,6 +233,7 @@ const NoteItem: FC<Props> = (props) => {
           onMouseDown={() => setIsDragging(true)}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
+          data-testid="move-note-area"
         ></div>
         <IconButton
           className="delete-note-button"

@@ -132,4 +132,45 @@ describe('NoteItem', () => {
 
     expect(onDelete).toHaveBeenCalledTimes(1);
   });
+
+  it('should start dragging correctly', () => {
+    const { getByTestId } = renderNoteItem(note);
+    const noteItem = getByTestId('note-item-1');
+    const moveNoteArea = getByTestId('move-note-area');
+
+    expect(moveNoteArea).toBeInTheDocument();
+
+    act(() => {
+      fireEvent.mouseDown(moveNoteArea);
+    });
+
+    expect(noteItem.draggable).toEqual(true);
+
+    act(() => {
+      fireEvent.dragStart(noteItem, { dataTransfer: { setData: jest.fn() } });
+    });
+
+    expect(noteItem.classList).toContain('hide');
+  });
+
+  it('should end dragging correctly', () => {
+    const { getByTestId } = renderNoteItem(note);
+    const noteItem = getByTestId('note-item-1');
+    const moveNoteArea = getByTestId('move-note-area');
+
+    act(() => {
+      fireEvent.mouseDown(moveNoteArea);
+    });
+
+    act(() => {
+      fireEvent.dragStart(noteItem, { dataTransfer: { setData: jest.fn() } });
+    });
+
+    act(() => {
+      fireEvent.dragEnd(noteItem);
+    });
+
+    expect(noteItem.classList).not.toContain('hide');
+    expect(noteItem.draggable).toEqual(false);
+  });
 });
