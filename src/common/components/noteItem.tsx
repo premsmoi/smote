@@ -12,14 +12,12 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { noteColors } from '../../const';
+import { NOTE_HEIGHT, NOTE_WIDTH, noteColors } from '../../const';
 import { DragEventHandler } from 'react';
 import { useRecoilState } from 'recoil';
 import { confirmationDialog } from '../../atoms/confirmationDialog';
 import { Paper } from '@mui/material';
 
-const NOTE_WIDTH = 200;
-const NOTE_HEIGHT = 200;
 const SCROLL_SIZE = 2;
 
 interface Props {

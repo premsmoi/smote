@@ -20,7 +20,7 @@ import AddIcon from '@mui/icons-material/Add';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { request } from '../../utils/request';
 import NoteItem from '../../common/components/noteItem';
-import { API_PATH } from '../../const';
+import { API_PATH, NOTE_HEIGHT, NOTE_WIDTH } from '../../const';
 import { sortNotesByUpdatedTime } from '../../utils/notes';
 import { confirmationDialog } from '../../atoms/confirmationDialog';
 import { useRecoilState } from 'recoil';
@@ -80,12 +80,18 @@ const Board: React.FC<Props> = () => {
   };
 
   const handleAddNote = () => {
+    if (!boardRef.current) return;
+
     request<SmoteResponse<Note>>(API_PATH.NOTES, {
       method: 'POST',
       body: JSON.stringify({
         boardId,
-        x: 100,
-        y: 100,
+        x:
+          boardRef.current.scrollLeft +
+          (boardRef.current.clientWidth - NOTE_WIDTH) / 2,
+        y:
+          boardRef.current.scrollTop +
+          (boardRef.current.clientHeight - NOTE_HEIGHT) / 2,
         updatedTime: Date.now()
       })
     }).then((res) => {

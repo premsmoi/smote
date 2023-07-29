@@ -37,3 +37,6 @@ export const COLLECTION = {
 export const USER_TYPE = {
   GUEST: 'guest',
 };
+
+export const NOTE_WIDTH = 200;
+export const NOTE_HEIGHT = 200;
