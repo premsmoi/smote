@@ -1,6 +1,7 @@
 import { act, fireEvent, queryByTestId, screen } from '@testing-library/react';
 import NoteItem from '../src/common/components/noteItem';
 import { renderApp } from './app.test';
+import React, { DragEvent } from 'react';
 
 const note: Note = {
   noteId: '1',
@@ -15,9 +16,18 @@ const note: Note = {
 const onDelete = jest.fn().mockResolvedValue(null);
 const onUpdate = jest.fn().mockResolvedValue(null);
 
+const boardRef: React.RefObject<HTMLDivElement> = {
+  current: document.createElement('div')
+};
+
 const renderNoteItem = (note: Note) => {
   return renderApp(
-    <NoteItem note={note} onDelete={onDelete} onUpdate={onUpdate} />
+    <NoteItem
+      note={note}
+      onDelete={onDelete}
+      onUpdate={onUpdate}
+      boardRef={boardRef}
+    />
   );
 };
 
@@ -146,11 +156,15 @@ describe('NoteItem', () => {
 
     expect(noteItem.draggable).toEqual(true);
 
+    const e = {
+      dataTransfer: { setData: jest.fn() }
+    };
+
     act(() => {
-      fireEvent.dragStart(noteItem, { dataTransfer: { setData: jest.fn() } });
+      fireEvent.dragStart(noteItem, e);
     });
 
-    expect(noteItem.classList).toContain('hide');
+    expect(e.dataTransfer.setData).toHaveBeenCalledTimes(1);
   });
 
   it('should end dragging correctly', () => {
@@ -170,7 +184,6 @@ describe('NoteItem', () => {
       fireEvent.dragEnd(noteItem);
     });
 
-    expect(noteItem.classList).not.toContain('hide');
     expect(noteItem.draggable).toEqual(false);
   });
 });

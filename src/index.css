@@ -11,3 +11,48 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+html,
+body,
+#__next,
+.board {
+  height: 100vh;
+}
+
+body {
+  margin: 0;
+}
+
+.MuiButton-root {
+  height: 30px !important;
+  padding: 0px 10px !important;
+}
+
+.MuiIconButton-root {
+  padding: unset !important;
+}
+
+.MuiPaper-root {
+  padding: 0 16px 16px;
+}
+
+.MuiTypography-root {
+  text-align: center;
+  padding: 10px;
+}
+
+.confirmationDialog .MuiPaper-root {
+  padding: 8px 16px;
+}
+
+.confirmationDialog .MuiTypography-root {
+  padding: 8px 0;
+}
+
+.confirmationDialog .MuiDialogContent-root {
+  padding: 0;
+}
+
+.confirmationDialog .MuiDialogActions-root {
+  padding: 8px 0;
+}

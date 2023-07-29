@@ -5,6 +5,7 @@ import React, {
   useRef,
   MouseEvent as ReactMouseEvent
 } from 'react';
+import { createUseStyles } from 'react-jss';
 import { useRouter } from 'next/router';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
@@ -20,15 +21,88 @@ import AddIcon from '@mui/icons-material/Add';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { request } from '../../utils/request';
 import NoteItem from '../../common/components/noteItem';
-import { API_PATH, NOTE_HEIGHT, NOTE_WIDTH } from '../../const';
+import { API_PATH, HEADER_HIGHT, NOTE_HEIGHT, NOTE_WIDTH } from '../../const';
 import { sortNotesByUpdatedTime } from '../../utils/notes';
 import { confirmationDialog } from '../../atoms/confirmationDialog';
 import { useRecoilState } from 'recoil';
 import useBoard from '../../hooks/useBoard';
 
+const useStyles = createUseStyles({
+  board: {
+    position: 'relative',
+    height: `calc(100vh - ${HEADER_HIGHT}px - 1px)`
+  },
+  editBoardDialog: {
+    '& .content': {
+      display: 'grid',
+      rowGap: '10px'
+    }
+  },
+  toolbar: {
+    position: 'absolute',
+    display: 'flex',
+    alignItems: 'center',
+    padding: '0 8px',
+    height: '45px',
+    zIndex: 2,
+    top: '12px',
+    left: '12px',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    boxShadow:
+      '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
+    borderRadius: '8px'
+  },
+  boardName: {
+    fontSize: '30px',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    maxWidth: '250px'
+  },
+  buttonContainer: {
+    '& .add-button': {
+      position: 'fixed',
+      bottom: '16px',
+      right: '16px',
+      zIndex: 2,
+      backgroundColor: '#1976d2',
+      color: 'white',
+      boxShadow:
+        '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)'
+    },
+
+    '& button': {
+      marginLeft: '10px'
+    },
+
+    '& svg': {
+      cursor: 'pointer'
+    }
+  },
+  boardContainer: {
+    overflow: 'scroll',
+    height: `calc(100vh - ${HEADER_HIGHT}px - 1px)`,
+
+    /* Hide scrollbar for Chrome, Safari, and Opera */
+    '&::-webkit-scrollbar': {
+      display: 'none'
+    },
+
+    '-ms-overflow-style': 'none' /* IE and Edge */,
+    scrollbarWidth: 'none' /* Firefox */,
+
+    '& .board-area': {
+      width: '2560px',
+      height: '1440px',
+      position: 'relative'
+    }
+  }
+});
+
 interface Props {}
 
 const Board: React.FC<Props> = () => {
+  const classes = useStyles();
   const router = useRouter();
   const boardRef = useRef<HTMLDivElement>(null);
   const boardId = router.query.boardId as string;
@@ -230,7 +304,7 @@ const Board: React.FC<Props> = () => {
   const renderEditBoardDialog = () => {
     const deletable = notes.length === 0;
     return (
-      <Dialog className="editBoardDialog" open={isShowEditBoardDialog}>
+      <Dialog className={classes.editBoardDialog} open={isShowEditBoardDialog}>
         <DialogTitle>Edit Board</DialogTitle>
         <div className="content">
           <TextField
@@ -269,12 +343,12 @@ const Board: React.FC<Props> = () => {
   };
 
   return (
-    <div className="board">
+    <div className={classes.board}>
       {board && (
         <div className="body">
-          <div className="toolbar">
-            <div className="board-name">{board?.boardName}</div>
-            <div className="button-container">
+          <div className={classes.toolbar}>
+            <div className={classes.boardName}>{board?.boardName}</div>
+            <div className={classes.buttonContainer}>
               <IconButton
                 className="add-button"
                 size="large"
@@ -287,7 +361,7 @@ const Board: React.FC<Props> = () => {
               </IconButton>
             </div>
           </div>
-          <div className="board-container" ref={boardRef}>
+          <div className={classes.boardContainer} ref={boardRef}>
             <div
               className="board-area"
               onDragOver={onDragOver}

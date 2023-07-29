@@ -1,11 +1,29 @@
 import React, { useEffect, useState } from 'react';
+import { createUseStyles } from 'react-jss';
 import { Button, Dialog, TextField, DialogTitle, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { request } from '../utils/request';
 import BoardItem from '../common/components/boardItem';
 import { API_PATH } from '../const';
 
+const useStyles = createUseStyles({
+  home: {
+    '& .button-container': {
+      display: 'flex',
+      justifyContent: 'space-between',
+      padding: '10px 16px'
+    }
+  },
+  createBoardDialog: {
+    '& .content': {
+      display: 'grid',
+      rowGap: '10px'
+    }
+  }
+});
+
 const Home = () => {
+  const classes = useStyles();
   const [boards, setBoards] = useState<Board[]>([]);
   const [isShowCreateBoardDialog, setIsShowCreateBoardDialog] = useState(false);
   const [newBoardName, setNewBoardName] = useState('');
@@ -41,7 +59,7 @@ const Home = () => {
   };
 
   return (
-    <div className="home">
+    <div className={classes.home}>
       <div className="button-container">
         <Button
           variant="contained"
@@ -52,7 +70,7 @@ const Home = () => {
           Create Board
         </Button>
       </div>
-      <Grid container spacing={2} className="boardList" padding={2}>
+      <Grid container spacing={2} padding={2}>
         {boards.map((board: Board) => {
           return (
             <Grid xs={6} sm={4} md={3} xl={2} item key={board.boardId}>
@@ -61,7 +79,10 @@ const Home = () => {
           );
         })}
       </Grid>
-      <Dialog className="createBoardDialog" open={isShowCreateBoardDialog}>
+      <Dialog
+        className={classes.createBoardDialog}
+        open={isShowCreateBoardDialog}
+      >
         <DialogTitle>Create Board</DialogTitle>
         <div className="content">
           <TextField
