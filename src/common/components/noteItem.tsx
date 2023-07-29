@@ -20,6 +20,7 @@ import { Paper } from '@mui/material';
 
 const NOTE_WIDTH = 200;
 const NOTE_HEIGHT = 200;
+const SCROLL_SIZE = 2;
 
 interface Props {
   note: Note;
@@ -27,6 +28,14 @@ interface Props {
   onDelete: (noteId: string) => Promise<void>;
   onUpdate: (note: Note) => Promise<void>;
   boardRef: React.RefObject<HTMLDivElement>;
+}
+
+enum ScrollDirection {
+  None = 0,
+  Left = 1,
+  Right = 2,
+  Top = 3,
+  Bottom = 4
 }
 
 const NoteItem: FC<Props> = (props) => {
@@ -39,6 +48,10 @@ const NoteItem: FC<Props> = (props) => {
   const [, setConfirmationDialogData] = useRecoilState(confirmationDialog);
   const noteItemRef = useRef<HTMLDivElement>(null);
   const colorPickerRef = useRef<HTMLDivElement>(null);
+  const [scrollDirection, setScrollDirection] = useState<ScrollDirection>(
+    ScrollDirection.None
+  );
+  const scrollInterval = useRef<NodeJS.Timer>();
 
   useLayoutEffect(() => {
     const noteItem = noteItemRef.current;
@@ -89,6 +102,8 @@ const NoteItem: FC<Props> = (props) => {
 
   const onDragEnd: DragEventHandler = () => {
     setIsDragging(false);
+    clearInterval(scrollInterval.current);
+    delete scrollInterval.current;
 
     const noteElement = noteItemRef.current;
 
@@ -150,6 +165,20 @@ const NoteItem: FC<Props> = (props) => {
     });
   };
 
+  const checkScrollDirection = (x: number, y: number) => {
+    if (x + NOTE_WIDTH / 2 > window.innerWidth) {
+      setScrollDirection(ScrollDirection.Right);
+    } else if (x - NOTE_WIDTH / 2 < 0) {
+      setScrollDirection(ScrollDirection.Left);
+    } else if (y + NOTE_WIDTH > window.innerHeight) {
+      setScrollDirection(ScrollDirection.Bottom);
+    } else if (y - NOTE_WIDTH / 2 < 0) {
+      setScrollDirection(ScrollDirection.Top);
+    } else {
+      setScrollDirection(ScrollDirection.None);
+    }
+  };
+
   const handleTouchMove = (e: TouchEvent) => {
     // grab the location of touch
     const touchLocation = e.targetTouches[0];
@@ -167,6 +196,8 @@ const NoteItem: FC<Props> = (props) => {
       25 +
       'px';
     noteElement.style.zIndex = '2';
+
+    checkScrollDirection(touchLocation.pageX, touchLocation.pageY);
   };
 
   const handleTouchEnd = () => {
@@ -175,6 +206,9 @@ const NoteItem: FC<Props> = (props) => {
     if (!noteElement) return;
 
     noteElement.style.zIndex = '';
+
+    clearInterval(scrollInterval.current);
+    delete scrollInterval.current;
 
     handleUpdateNote({
       ...note,
@@ -188,6 +222,33 @@ const NoteItem: FC<Props> = (props) => {
       colorPickerRef.current.focus();
     }
   }, [isShowColorPicker]);
+
+  useEffect(() => {
+    const boardElement = boardRef.current;
+
+    if (!boardElement) return;
+
+    clearInterval(scrollInterval.current);
+    delete scrollInterval.current;
+
+    if (scrollInterval.current) return;
+
+    let scrollCallback;
+
+    if (scrollDirection === ScrollDirection.Right) {
+      scrollCallback = () => (boardElement.scrollLeft += SCROLL_SIZE);
+    } else if (scrollDirection === ScrollDirection.Left) {
+      scrollCallback = () => (boardElement.scrollLeft -= SCROLL_SIZE);
+    } else if (scrollDirection === ScrollDirection.Top) {
+      scrollCallback = () => (boardElement.scrollTop -= SCROLL_SIZE);
+    } else if (scrollDirection === ScrollDirection.Bottom) {
+      scrollCallback = () => (boardElement.scrollTop += SCROLL_SIZE);
+    }
+
+    if (scrollCallback) {
+      scrollInterval.current = setInterval(scrollCallback, 1);
+    }
+  }, [scrollDirection, boardRef]);
 
   return (
     <Paper
