@@ -8,6 +8,7 @@ import React, {
   TouchEvent,
   useEffect
 } from 'react';
+import { createUseStyles } from 'react-jss';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -19,6 +20,58 @@ import { confirmationDialog } from '../../atoms/confirmationDialog';
 import { Paper } from '@mui/material';
 
 const SCROLL_SIZE = 2;
+
+const useStyles = createUseStyles({
+  noteItem: {
+    border: '2px solid black',
+    lineHeight: '50px',
+    padding: '5px',
+    textAlign: 'center',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    position: 'absolute'
+  },
+  header: {
+    height: '25px',
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+  moveNoteArea: {
+    width: '100%',
+    height: 'inherit',
+    cursor: 'grab',
+    touchAction: 'none'
+  },
+  colorPicker: {
+    position: 'absolute',
+    top: '30px',
+    backgroundColor: 'white',
+    overflow: 'hidden',
+    transition: 'max-height 0.2s ease-out',
+    display: 'flex',
+    border: '0px solid lightgrey'
+  },
+  color: {
+    width: '20px',
+    height: '20px',
+    cursor: 'pointer'
+  },
+  noteEditor: {
+    width: '195px',
+    height: '195px',
+    fontSize: '16px',
+    fontFamily: 'inherit',
+    color: 'inherit',
+    border: 'unset',
+    backgroundColor: 'unset',
+    outline: 'unset',
+    resize: 'none'
+  },
+  hide: {
+    transition: '0.01s',
+    transform: 'translateX(-9999px)'
+  }
+});
 
 interface Props {
   note: Note;
@@ -37,6 +90,7 @@ enum ScrollDirection {
 }
 
 const NoteItem: FC<Props> = (props) => {
+  const classes = useStyles();
   const { note, isActive, boardRef, onDelete, onUpdate } = props;
   const { noteId, text, x, y } = note;
   const [newText, setNewText] = useState(text);
@@ -93,7 +147,7 @@ const NoteItem: FC<Props> = (props) => {
 
     if (!noteElement) return;
 
-    noteElement.classList.add('hide');
+    noteElement.classList.add(classes.hide);
 
     e.dataTransfer.setData('dragNoteData', JSON.stringify(dragNoteData));
   };
@@ -107,7 +161,7 @@ const NoteItem: FC<Props> = (props) => {
 
     if (!noteElement) return;
 
-    noteElement.classList.remove('hide');
+    noteElement.classList.remove(classes.hide);
   };
 
   const onClick = () => {
@@ -133,7 +187,7 @@ const NoteItem: FC<Props> = (props) => {
     return (
       <div
         ref={colorPickerRef}
-        className="colorPicker"
+        className={classes.colorPicker}
         onBlur={toggleColorPicker}
         data-testid="color-picker"
         tabIndex={0}
@@ -143,7 +197,7 @@ const NoteItem: FC<Props> = (props) => {
           return (
             <div
               key={color}
-              className="color"
+              className={classes.color}
               style={{ backgroundColor, borderColor }}
               onClick={() => onColorSelected(color)}
               data-testid={`color-${color}`}
@@ -250,7 +304,7 @@ const NoteItem: FC<Props> = (props) => {
 
   return (
     <Paper
-      className="note-item"
+      className={classes.noteItem}
       id={`note-item-${noteId}`}
       ref={noteItemRef}
       style={{ width: NOTE_WIDTH, height: NOTE_HEIGHT, top: y, left: x }}
@@ -262,9 +316,8 @@ const NoteItem: FC<Props> = (props) => {
       elevation={6}
       data-testid={`note-item-${noteId}`}
     >
-      <div className="header">
+      <div className={classes.header}>
         <IconButton
-          className="toggleColorPickerButton"
           onClick={(e) => {
             e.stopPropagation();
             toggleColorPicker();
@@ -278,14 +331,13 @@ const NoteItem: FC<Props> = (props) => {
           )}
         </IconButton>
         <div
-          className="move-note-area"
+          className={classes.moveNoteArea}
           onMouseDown={() => setIsDragging(true)}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
           data-testid="move-note-area"
         ></div>
         <IconButton
-          className="delete-note-button"
           onClick={openDeleteNoteConfirmationDialog}
           data-testid="delete-note-button"
         >
@@ -294,7 +346,7 @@ const NoteItem: FC<Props> = (props) => {
         {renderColorPicker()}
       </div>
       <textarea
-        className="noteEditor"
+        className={classes.noteEditor}
         data-testid="note-editor"
         value={newText}
         placeholder="Write your idea here.."
