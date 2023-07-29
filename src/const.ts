@@ -40,3 +40,5 @@ export const USER_TYPE = {
 
 export const NOTE_WIDTH = 200;
 export const NOTE_HEIGHT = 200;
+
+export const HEADER_HIGHT = 54;
