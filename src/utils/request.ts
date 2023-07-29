@@ -1,7 +1,7 @@
 import { trackPromise} from 'react-promise-tracker';
 import { signOut } from "next-auth/react"
 
-const checkResponseStatus = (res: Response<unknown>) => {
+const checkResponseStatus = (res: Response) => {
     if (res.status === 401) {
         signOut();
     }
@@ -9,8 +9,8 @@ const checkResponseStatus = (res: Response<unknown>) => {
     return res;
 }
 
-export const request = <Res>(url: string, option?: RequestInit, showBackdrop = true) => {
-    const fetchPromise: Promise<Res> = fetch(url, {
+export const request = <T>(url: string, option?: RequestInit, showBackdrop = true) => {
+    const fetchPromise: Promise<T> = fetch(url, {
         ...option,
         headers: {
             'Content-type': 'application/json'
