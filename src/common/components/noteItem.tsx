@@ -26,10 +26,11 @@ interface Props {
   isActive?: boolean;
   onDelete: (noteId: string) => Promise<void>;
   onUpdate: (note: Note) => Promise<void>;
+  boardRef: React.RefObject<HTMLDivElement>;
 }
 
 const NoteItem: FC<Props> = (props) => {
-  const { note, isActive, onDelete, onUpdate } = props;
+  const { note, isActive, boardRef, onDelete, onUpdate } = props;
   const { noteId, text, x, y } = note;
   const [newText, setNewText] = useState(text);
   const [color, setColor] = useState(note.color || 'yellow');
@@ -38,7 +39,6 @@ const NoteItem: FC<Props> = (props) => {
   const [, setConfirmationDialogData] = useRecoilState(confirmationDialog);
   const noteItemRef = useRef<HTMLDivElement>(null);
   const colorPickerRef = useRef<HTMLDivElement>(null);
-  const noteElementId = `note-item-${noteId}`;
 
   useLayoutEffect(() => {
     const noteItem = noteItemRef.current;
@@ -78,11 +78,11 @@ const NoteItem: FC<Props> = (props) => {
       offsetY: e.clientY - y
     };
 
-    const noteItem = noteItemRef.current;
+    const noteElement = noteItemRef.current;
 
-    if (!noteItem) return;
+    if (!noteElement) return;
 
-    noteItem.classList.add('hide');
+    noteElement.classList.add('hide');
 
     e.dataTransfer.setData('dragNoteData', JSON.stringify(dragNoteData));
   };
@@ -90,11 +90,11 @@ const NoteItem: FC<Props> = (props) => {
   const onDragEnd: DragEventHandler = () => {
     setIsDragging(false);
 
-    const noteItem = noteItemRef.current;
+    const noteElement = noteItemRef.current;
 
-    if (!noteItem) return;
+    if (!noteElement) return;
 
-    noteItem.classList.remove('hide');
+    noteElement.classList.remove('hide');
   };
 
   const onClick = () => {
@@ -153,18 +153,10 @@ const NoteItem: FC<Props> = (props) => {
   const handleTouchMove = (e: TouchEvent) => {
     // grab the location of touch
     const touchLocation = e.targetTouches[0];
+    const noteElement = noteItemRef.current;
+    const boardElement = boardRef.current;
 
-    const noteElement = document.getElementById(
-      noteElementId
-    ) as HTMLDivElement;
-
-    if (!noteElement) return;
-
-    const boardElement = document.getElementsByClassName(
-      'board-container'
-    )[0] as HTMLDivElement;
-
-    if (!boardElement) return;
+    if (!noteElement || !boardElement) return;
 
     noteElement.style.left =
       boardElement.scrollLeft + touchLocation.pageX - NOTE_WIDTH / 2 + 'px';
@@ -178,9 +170,7 @@ const NoteItem: FC<Props> = (props) => {
   };
 
   const handleTouchEnd = () => {
-    const noteElement = document.getElementById(
-      noteElementId
-    ) as HTMLDivElement;
+    const noteElement = noteItemRef.current;
 
     if (!noteElement) return;
 

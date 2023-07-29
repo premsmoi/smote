@@ -53,7 +53,7 @@ declare global {
         onClose?: () => Promise<void>;
     }
 
-    interface Response<T> {
+    interface SmoteResponse<T> {
         data: T
     }
 

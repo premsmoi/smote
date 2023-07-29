@@ -43,7 +43,7 @@ const Board: React.FC<Props> = () => {
   useEffect(() => {
     if (!boardId) return;
 
-    request<Response<Note[]>>(`${API_PATH.NOTES}?boardId=${boardId}`)
+    request<SmoteResponse<Note[]>>(`${API_PATH.NOTES}?boardId=${boardId}`)
       .then((res) => {
         const notes: Note[] = res.data;
 
@@ -68,7 +68,7 @@ const Board: React.FC<Props> = () => {
       isPublic
     };
 
-    request<Response<Board>>(API_PATH.BOARDS, {
+    request<SmoteResponse<Board>>(API_PATH.BOARDS, {
       method: 'PUT',
       body: JSON.stringify(updatedBoard)
     }).then((res) => {
@@ -80,7 +80,7 @@ const Board: React.FC<Props> = () => {
   };
 
   const handleAddNote = () => {
-    request<Response<Note>>(API_PATH.NOTES, {
+    request<SmoteResponse<Note>>(API_PATH.NOTES, {
       method: 'POST',
       body: JSON.stringify({
         boardId,
@@ -297,6 +297,7 @@ const Board: React.FC<Props> = () => {
                   onUpdate={handleUpdateNote}
                   onDelete={handleDeleteNote}
                   isActive={index === notes.length - 1}
+                  boardRef={boardRef}
                 />
               ))}
             </div>
