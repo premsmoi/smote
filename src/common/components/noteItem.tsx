@@ -5,7 +5,8 @@ import React, {
   useState,
   useRef,
   useLayoutEffect,
-  TouchEvent
+  TouchEvent,
+  useEffect
 } from 'react';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
@@ -103,43 +104,26 @@ const NoteItem: FC<Props> = (props) => {
   };
 
   const onColorSelected = (color: string) => {
-    hideColorPicker();
+    toggleColorPicker();
     note.color = color;
     setColor(color);
     handleUpdateNote(note);
   };
 
-  const showColorPicker = () => {
-    const colorPicker = colorPickerRef.current;
-
-    if (!colorPicker) return;
-
-    setIsShowColorPicker(true);
-
-    colorPicker.style.maxHeight = `${colorPicker.scrollHeight}px`;
-    colorPicker.style.borderWidth = '1px';
-    colorPicker.tabIndex = -1;
-    colorPicker.focus();
-  };
-
-  const hideColorPicker = () => {
-    const colorPicker = colorPickerRef.current;
-
-    if (!colorPicker) return;
-
-    setIsShowColorPicker(false);
-
-    colorPicker.style.maxHeight = '';
-    colorPicker.style.borderWidth = '0px';
-    colorPicker.tabIndex = 0;
+  const toggleColorPicker = () => {
+    setIsShowColorPicker(!isShowColorPicker);
   };
 
   const renderColorPicker = () => {
+    if (!isShowColorPicker) return null;
+
     return (
       <div
         ref={colorPickerRef}
         className="colorPicker"
-        onBlur={hideColorPicker}
+        onBlur={toggleColorPicker}
+        data-testid="color-picker"
+        tabIndex={0}
       >
         {Object.entries(noteColors).map(([color, noteColor]) => {
           const { backgroundColor, borderColor } = noteColor;
@@ -149,6 +133,7 @@ const NoteItem: FC<Props> = (props) => {
               className="color"
               style={{ backgroundColor, borderColor }}
               onClick={() => onColorSelected(color)}
+              data-testid={`color-${color}`}
             ></div>
           );
         })}
@@ -208,6 +193,12 @@ const NoteItem: FC<Props> = (props) => {
     });
   };
 
+  useEffect(() => {
+    if (colorPickerRef.current) {
+      colorPickerRef.current.focus();
+    }
+  }, [isShowColorPicker]);
+
   return (
     <Paper
       className="note-item"
@@ -220,11 +211,16 @@ const NoteItem: FC<Props> = (props) => {
       onClick={onClick}
       draggable={isDragging}
       elevation={6}
+      data-testid={`note-item-${noteId}`}
     >
       <div className="header">
         <IconButton
           className="toggleColorPickerButton"
-          onClick={showColorPicker}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleColorPicker();
+          }}
+          data-testid="toggle-color-picker-button"
         >
           {isShowColorPicker ? (
             <KeyboardArrowUpIcon />
@@ -237,10 +233,12 @@ const NoteItem: FC<Props> = (props) => {
           onMouseDown={() => setIsDragging(true)}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
+          data-testid="move-note-area"
         ></div>
         <IconButton
-          className="deleteNoteButton"
+          className="delete-note-button"
           onClick={openDeleteNoteConfirmationDialog}
+          data-testid="delete-note-button"
         >
           <CloseIcon />
         </IconButton>
@@ -248,6 +246,7 @@ const NoteItem: FC<Props> = (props) => {
       </div>
       <textarea
         className="noteEditor"
+        data-testid="note-editor"
         value={newText}
         placeholder="Write your idea here.."
         onChange={onTextChange}
