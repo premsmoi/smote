@@ -15,7 +15,7 @@ const LoadingBackdrop = (props: Props) => {
     >
       <CircularProgress color="inherit" />
     </Backdrop>
-  )
+  );
 };
 
 export default LoadingBackdrop;

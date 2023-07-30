@@ -22,8 +22,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { request } from '@src/utils/request';
 import NoteItem from '@src/components/note-item/note-item';
 import { API_PATH, HEADER_HIGHT, NOTE_HEIGHT, NOTE_WIDTH } from '@src/const';
-import { sortNotesByUpdatedTime } from '@src/utils/notes';
-import { confirmationDialog } from '@src/atoms/confirmationDialog';
+import { sortNotesByUpdatedTime } from '@src/services/noteService';
+import { confirmationDialog } from '@src/atoms/confirmation-dialog';
 import { useRecoilState } from 'recoil';
 import useBoard from '@src/hooks/useBoard';
 

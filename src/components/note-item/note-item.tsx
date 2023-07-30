@@ -16,7 +16,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { NOTE_HEIGHT, NOTE_WIDTH, noteColors } from '@src/const';
 import { DragEventHandler } from 'react';
 import { useRecoilState } from 'recoil';
-import { confirmationDialog } from '@src/atoms/confirmationDialog';
+import { confirmationDialog } from '@src/atoms/confirmation-dialog';
 import { Paper } from '@mui/material';
 
 const SCROLL_SIZE = 2;
