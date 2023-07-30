@@ -19,13 +19,13 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { request } from '../../utils/request';
-import NoteItem from '../../common/components/noteItem';
-import { API_PATH, HEADER_HIGHT, NOTE_HEIGHT, NOTE_WIDTH } from '../../const';
-import { sortNotesByUpdatedTime } from '../../utils/notes';
-import { confirmationDialog } from '../../atoms/confirmationDialog';
+import { request } from '@src/utils/request';
+import NoteItem from '@src/components/note-item/note-item';
+import { API_PATH, HEADER_HIGHT, NOTE_HEIGHT, NOTE_WIDTH } from '@src/const';
+import { sortNotesByUpdatedTime } from '@src/utils/notes';
+import { confirmationDialog } from '@src/atoms/confirmationDialog';
 import { useRecoilState } from 'recoil';
-import useBoard from '../../hooks/useBoard';
+import useBoard from '@src/hooks/useBoard';
 
 const useStyles = createUseStyles({
   board: {

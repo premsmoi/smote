@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { useRecoilState } from 'recoil';
-import { confirmationDialog } from '../../../atoms/confirmationDialog';
+import { confirmationDialog } from '@src/atoms/confirmationDialog';
 
 const ConfirmationDialog = () => {
   const [data, setData] = useRecoilState(confirmationDialog);

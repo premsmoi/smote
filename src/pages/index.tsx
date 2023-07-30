@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import { Button, Dialog, TextField, DialogTitle, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { request } from '../utils/request';
-import BoardItem from '../common/components/boardItem';
-import { API_PATH } from '../const';
+import { request } from '@src/utils/request';
+import BoardItem from '@src/components/board-item/board-item';
+import { API_PATH } from '@src/const';
 
 const useStyles = createUseStyles({
   home: {

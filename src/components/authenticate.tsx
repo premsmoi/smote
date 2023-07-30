@@ -1,17 +1,17 @@
 import { ReactElement, useEffect } from 'react';
-import { useRecoilState } from "recoil";
-import { getSession, signIn } from "next-auth/react"
-import { userProfileAtom } from '../../atoms/authentication';
+import { useRecoilState } from 'recoil';
+import { getSession, signIn } from 'next-auth/react';
+import { userProfileAtom } from '@src/atoms/authentication';
 
 interface Props {
-  children: ReactElement
+  children: ReactElement;
 }
 
 const Authenticate = (props: Props) => {
   const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
 
   useEffect(() => {
-    getSession().then(data => {
+    getSession().then((data) => {
       const user = data?.user as UserProfile;
       if (user) {
         setUserProfile(user);
@@ -22,6 +22,6 @@ const Authenticate = (props: Props) => {
   }, [setUserProfile]);
 
   return userProfile ? props.children : null;
-}
+};
 
 export default Authenticate;

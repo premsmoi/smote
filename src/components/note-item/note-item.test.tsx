@@ -1,7 +1,7 @@
+import React from 'react';
 import { act, fireEvent, queryByTestId, screen } from '@testing-library/react';
-import NoteItem from '../src/common/components/noteItem';
-import { renderApp } from './app.test';
-import React, { DragEvent } from 'react';
+import NoteItem from './note-item';
+import { renderApp } from '@src/app.test';
 
 const note: Note = {
   noteId: '1',

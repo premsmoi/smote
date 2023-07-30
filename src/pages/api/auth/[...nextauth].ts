@@ -2,8 +2,8 @@ import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
-import { COLLECTION, USER_TYPE } from "../../../const";
-import { connectToDatabase } from "../../../utils/database";
+import { COLLECTION, USER_TYPE } from "@src/const";
+import { connectToDatabase } from "@src/utils/database";
 
 export const addNewUserProfile = async (user: UserProfile): Promise<boolean> => {
   const { db } = await connectToDatabase();

@@ -1,14 +1,13 @@
 import React from 'react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import { Session } from 'next-auth';
 import { RecoilRoot } from 'recoil';
 import { usePromiseTracker } from 'react-promise-tracker';
-import ConfirmationDialog from '../common/components/dialogs/confirmation';
-import LoadingBackdrop from '../common/components/loadingBackdrop';
-import Header from '../common/components/header';
-import Authenticate from '../common/components/authenticate';
-import { Session } from 'next-auth';
-import '../index.css';
+import ConfirmationDialog from '@src/components/dialogs/confirmation';
+import LoadingBackdrop from '@src/components/loadingBackdrop';
+import Header from '@src/components/header';
+import Authenticate from '@src/components/authenticate';
 
 function App({
   Component,

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import IconButton from '@mui/material/IconButton';
 import { Logout } from '@mui/icons-material';
 import { signOut } from 'next-auth/react';
-import { HEADER_HIGHT } from '../../const';
+import { HEADER_HIGHT } from '@src/const';
 
 const useStyles = createUseStyles({
   header: {
