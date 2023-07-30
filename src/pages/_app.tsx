@@ -4,9 +4,9 @@ import Head from 'next/head';
 import { Session } from 'next-auth';
 import { RecoilRoot } from 'recoil';
 import { usePromiseTracker } from 'react-promise-tracker';
-import ConfirmationDialog from '@src/components/dialogs/confirmation';
-import LoadingBackdrop from '@src/components/loading-backdrop';
-import Header from '@src/components/header';
+import ConfirmationDialog from '@src/components/dialogs/confirmation/confirmation';
+import LoadingBackdrop from '@src/components/loading-backdrop/loading-backdrop';
+import Header from '@src/components/header/header';
 import Authenticate from '@src/components/authenticate';
 import '@src/index.css';
 

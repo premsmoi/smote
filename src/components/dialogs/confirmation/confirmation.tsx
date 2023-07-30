@@ -9,8 +9,10 @@ import {
 import React from 'react';
 import { useRecoilState } from 'recoil';
 import { confirmationDialog } from '@src/atoms/confirmation-dialog';
+import { useConfirmationStyles } from './confirmation.style';
 
 const ConfirmationDialog = () => {
+  const classes = useConfirmationStyles();
   const [data, setData] = useRecoilState(confirmationDialog);
   const { title, message, isShow, onConfirm, onClose } = data;
 
@@ -32,7 +34,7 @@ const ConfirmationDialog = () => {
   };
 
   return (
-    <Dialog className="confirmationDialog" open={isShow}>
+    <Dialog className={classes.confirmationDialog} open={isShow}>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <DialogContentText className="message">{message}</DialogContentText>
