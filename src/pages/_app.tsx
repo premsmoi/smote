@@ -8,6 +8,7 @@ import ConfirmationDialog from '@src/components/dialogs/confirmation';
 import LoadingBackdrop from '@src/components/loadingBackdrop';
 import Header from '@src/components/header';
 import Authenticate from '@src/components/authenticate';
+import '@src/index.css';
 
 function App({
   Component,
