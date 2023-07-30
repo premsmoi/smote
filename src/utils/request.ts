@@ -21,7 +21,3 @@ export const request = <T>(url: string, option?: RequestInit, showBackdrop = tru
 
     return fetchPromise;
 };
-
-export const queryStringToNumber = (value: string | string[]): number => {
-    return parseInt(value.toString());
-};

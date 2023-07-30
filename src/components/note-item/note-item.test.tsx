@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, fireEvent, queryByTestId, screen } from '@testing-library/react';
 import NoteItem from './note-item';
-import { renderApp } from '@src/app.test';
+import { renderApp } from '@src/utils/test-utils';
 
 const note: Note = {
   noteId: '1',
