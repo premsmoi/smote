@@ -3,9 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import { NextApiRequest, NextApiResponse } from 'next/types';
 import { authOptions } from './auth/[...nextauth]';
 import { unauthorized } from './response';
-
-const hostname = 'https://smote-service-yq7g2xs3nq-as.a.run.app';
-// const hostname = 'http://localhost:8080'
+import { hostname } from '@src/const';
 
 const apiRoute = async (req: NextApiRequest, res: NextApiResponse) => {
   const { query: { path } } = req;

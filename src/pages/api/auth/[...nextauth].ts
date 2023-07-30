@@ -2,21 +2,8 @@ import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
-import { COLLECTION, USER_TYPE } from "@src/const";
-import { connectToDatabase } from "@src/utils/database";
-
-export const addNewUserProfile = async (user: UserProfile): Promise<boolean> => {
-  const { db } = await connectToDatabase();
-  const checkedUser = await db.collection(COLLECTION.USERS).findOne({ uid: user.uid });
-
-  if (checkedUser) {
-    return false;
-  }
-
-  await db.collection(COLLECTION.USERS).insertOne({ ...user });
-
-  return true;
-}
+import { USER_TYPE, hostname } from "@src/const";
+import axios from "axios";
 
 export const authOptions: AuthOptions = {
   // Configure one or more authentication providers
@@ -56,9 +43,15 @@ export const authOptions: AuthOptions = {
         provider: account?.provider || '',
       };
 
-      await addNewUserProfile(userProfile);
+      try {
+        await axios.post(`${hostname}/users`, userProfile)
 
-      return true;
+        return true;
+      }
+      catch (error) {
+        console.log({ error })
+        return false;
+      }
     },
     async jwt({ token, account }) {
       if (account) {

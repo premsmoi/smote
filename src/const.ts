@@ -27,13 +27,6 @@ export const API_PATH = {
   NOTES: '/api/notes',
 };
 
-export const COLLECTION = {
-  BOARDS: 'boards',
-  NOTES: 'notes',
-  USERS: 'users',
-  COUTERS: 'counters',
-};
-
 export const USER_TYPE = {
   GUEST: 'guest',
 };
@@ -42,3 +35,6 @@ export const NOTE_WIDTH = 200;
 export const NOTE_HEIGHT = 200;
 
 export const HEADER_HIGHT = 54;
+
+export const hostname = 'https://smote-service-yq7g2xs3nq-as.a.run.app';
+// export const hostname = 'http://localhost:8080'
