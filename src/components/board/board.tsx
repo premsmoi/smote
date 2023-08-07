@@ -216,8 +216,9 @@ const Board: React.FC<Props> = ({ boardId }) => {
 
   const handleMouseUp = (e: ReactMouseEvent) => {
     const target = e.target as HTMLDivElement;
-
     const boardElement = boardRef.current;
+
+    if (target.className !== 'board-area') return;
 
     if (boardElement) {
       boardElement.onmousemove = null;
